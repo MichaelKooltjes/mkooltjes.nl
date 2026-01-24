@@ -1,11 +1,545 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>mkooltjes.nl</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Michael Kooltjes — Electrical Engineering Student</title>
+  <meta name="description" content="Portfolio of an Electrical Engineering student: projects, skills, and contact." />
+  <style>
+    :root{
+      --bg: #0b0f17;
+      --card: rgba(255,255,255,0.06);
+      --card2: rgba(255,255,255,0.085);
+      --text: rgba(255,255,255,0.9);
+      --muted: rgba(255,255,255,0.7);
+      --muted2: rgba(255,255,255,0.55);
+      --line: rgba(255,255,255,0.12);
+      --accent: #7dd3fc;
+      --accent2: #a78bfa;
+      --ok: #34d399;
+      --warn: #fbbf24;
+      --shadow: 0 20px 60px rgba(0,0,0,0.35);
+      --radius: 18px;
+      --max: 1050px;
+    }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--text);
+      background:
+        radial-gradient(1000px 500px at 15% -10%, rgba(125,211,252,0.22), transparent 60%),
+        radial-gradient(900px 450px at 95% 0%, rgba(167,139,250,0.18), transparent 55%),
+        radial-gradient(1000px 700px at 50% 100%, rgba(52,211,153,0.10), transparent 60%),
+        var(--bg);
+      line-height: 1.55;
+    }
+    a{ color: inherit; text-decoration: none; }
+    a:hover{ text-decoration: underline; text-underline-offset: 3px; }
+    .wrap{ max-width: var(--max); margin: 0 auto; padding: 28px 18px 72px; }
+    .nav{
+      position: sticky; top: 0;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(to bottom, rgba(11,15,23,0.82), rgba(11,15,23,0.55));
+      border-bottom: 1px solid var(--line);
+      z-index: 10;
+    }
+    .nav-inner{
+      max-width: var(--max); margin: 0 auto; padding: 14px 18px;
+      display:flex; align-items:center; justify-content:space-between; gap: 14px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight: 700; letter-spacing: 0.2px;
+    }
+    .dot{
+      width: 10px; height: 10px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 0 0 3px rgba(125,211,252,0.12);
+    }
+    .nav-links{
+      display:flex; align-items:center; gap: 14px; flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .pill{
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.03);
+    }
+    .pill:hover{ background: rgba(255,255,255,0.06); text-decoration:none; }
+
+    /* HERO */
+    .hero{
+      margin-top: 22px;
+      display:grid;
+      grid-template-columns: 1.35fr 0.65fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    @media (max-width: 860px){
+      .hero{ grid-template-columns: 1fr; }
+    }
+    .card{
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, var(--card), rgba(255,255,255,0.03));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .hero-main{ padding: 26px; }
+    .kicker{
+      display:inline-flex; align-items:center; gap:10px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .badge{
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+    }
+    h1{
+      margin: 12px 0 8px;
+      font-size: clamp(28px, 3.2vw, 44px);
+      line-height: 1.1;
+      letter-spacing: -0.6px;
+    }
+    .subtitle{
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 70ch;
+      margin: 0 0 18px;
+    }
+    .cta-row{
+      display:flex; flex-wrap: wrap; gap: 10px;
+      margin-top: 10px;
+    }
+    .btn{
+      display:inline-flex; align-items:center; gap:10px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .btn.primary{
+      border: none;
+      background: linear-gradient(135deg, rgba(125,211,252,0.95), rgba(167,139,250,0.95));
+      color: rgba(9,11,15,0.92);
+    }
+    .btn.primary:hover{ filter: brightness(1.04); text-decoration:none; }
+    .btn:hover{ background: rgba(255,255,255,0.07); text-decoration:none; }
+
+    .hero-side{ padding: 18px; display:flex; flex-direction: column; gap: 12px; }
+    .mini{
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, var(--card2), rgba(255,255,255,0.03));
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .mini h3{ margin:0 0 6px; font-size: 14px; color: var(--muted); font-weight: 700; }
+    .mini p{ margin:0; font-size: 14px; color: var(--text); }
+    .list{
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* SECTIONS */
+    section{ margin-top: 22px; }
+    .section-head{
+      display:flex; align-items:flex-end; justify-content:space-between; gap: 10px;
+      margin: 18px 2px 12px;
+    }
+    .section-head h2{
+      margin:0;
+      font-size: 18px;
+      letter-spacing: -0.2px;
+    }
+    .section-head .hint{ color: var(--muted2); font-size: 13px; }
+
+    .grid-2{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 860px){ .grid-2{ grid-template-columns: 1fr; } }
+
+    .grid-3{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    @media (max-width: 980px){ .grid-3{ grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 640px){ .grid-3{ grid-template-columns: 1fr; } }
+
+    .proj{
+      padding: 16px;
+      transition: transform .12s ease, background .12s ease;
+    }
+    .proj:hover{ transform: translateY(-2px); background: rgba(255,255,255,0.055); }
+    .proj-top{ display:flex; align-items:flex-start; justify-content:space-between; gap: 10px; }
+    .proj h3{ margin: 0 0 6px; font-size: 16px; }
+    .proj .meta{ color: var(--muted2); font-size: 13px; }
+    .tags{ display:flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+    .tag{
+      font-size: 12px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+      color: var(--muted);
+    }
+    .proj-links{ margin-top: 12px; display:flex; gap: 12px; flex-wrap: wrap; color: var(--muted); font-size: 14px; }
+    .proj-links a{ border-bottom: 1px dashed rgba(255,255,255,0.25); }
+    .proj-links a:hover{ text-decoration:none; border-bottom-color: rgba(255,255,255,0.55); }
+
+    .skillbox{ padding: 16px; }
+    .skillbox h3{ margin:0 0 10px; font-size: 16px; }
+    .chips{ display:flex; flex-wrap:wrap; gap: 8px; }
+    .chip{
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .timeline{ padding: 16px; }
+    .item{ border-top: 1px solid var(--line); padding-top: 12px; margin-top: 12px; }
+    .item:first-child{ border-top: 0; padding-top: 0; margin-top: 0; }
+    .item .row{ display:flex; justify-content:space-between; gap: 12px; flex-wrap: wrap; }
+    .item .title{ font-weight: 700; }
+    .item .when{ color: var(--muted2); font-size: 13px; }
+    .item .desc{ margin: 6px 0 0; color: var(--muted); font-size: 14px; }
+
+    .footer{
+      margin-top: 34px;
+      padding: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted2);
+      font-size: 13px;
+      display:flex; justify-content:space-between; flex-wrap: wrap; gap: 10px;
+    }
+
+    /* small helper */
+    .sep{ height:1px; background: var(--line); margin: 14px 0; }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+  </style>
 </head>
+
 <body>
-  <h1>It works 🎉</h1>
-  <p>This site is served from GitHub Pages.</p>
+  <div class="nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <span class="dot" aria-hidden="true"></span>
+        <span>Michael Kooltjes</span>
+      </div>
+      <div class="nav-links">
+        <a class="pill" href="#projects">Projects</a>
+        <a class="pill" href="#skills">Skills</a>
+        <a class="pill" href="#experience">Experience</a>
+        <a class="pill" href="#contact">Contact</a>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <!-- HERO -->
+    <div class="hero">
+      <div class="card hero-main">
+        <div class="kicker">
+          <span class="badge">Electrical Engineering Student</span>
+          <span class="badge">Embedded • Control • Signal Processing</span>
+        </div>
+
+        <h1>Building practical systems that connect hardware, software, and real-world signals.</h1>
+
+        <p class="subtitle">
+          I’m an Electrical Engineering student with a love for hands-on engineering: embedded systems,
+          sensors, control, and turning ideas into working prototypes. I also enjoy creative work like
+          photography and music production — which keeps me sharp in both technical and visual thinking.
+        </p>
+
+        <div class="cta-row">
+          <!-- Replace # with your actual links -->
+          <a class="btn primary" href="#contact">Contact me</a>
+          <a class="btn" href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
+          <a class="btn" href="#" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a class="btn" href="#" download>Download CV (PDF)</a>
+        </div>
+
+        <div class="sep"></div>
+
+        <div class="grid-2">
+          <div>
+            <div class="mono" style="color:var(--muted2); font-size:13px;">Currently</div>
+            <div style="margin-top:6px; color:var(--muted); font-size:14px;">
+              <!-- Edit this line -->
+              Studying EE • building personal projects • looking for an internship / junior role
+            </div>
+          </div>
+          <div>
+            <div class="mono" style="color:var(--muted2); font-size:13px;">Interests</div>
+            <div style="margin-top:6px; color:var(--muted); font-size:14px;">
+              Embedded + sensors • robotics/control • DSP • clean web tools
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card hero-side">
+        <div class="mini">
+          <h3>Focus areas</h3>
+          <p>Embedded systems, modeling & control, and measurements.</p>
+          <ul class="list">
+            <li>Microcontrollers + sensors</li>
+            <li>Control loops & system identification</li>
+            <li>Data logging & analysis</li>
+          </ul>
+        </div>
+
+        <div class="mini">
+          <h3>Strengths</h3>
+          <ul class="list">
+            <li>Hands-on prototyping mindset</li>
+            <li>Clear documentation + reproducible code</li>
+            <li>Comfortable across HW/SW boundary</li>
+          </ul>
+        </div>
+
+        <div class="mini">
+          <h3>Quick links</h3>
+          <p style="color:var(--muted); font-size:14px; margin-top:8px;">
+            <a href="#projects">→ Projects</a><br/>
+            <a href="#skills">→ Skills</a><br/>
+            <a href="#contact">→ Contact</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <div class="section-head">
+        <h2>Selected projects</h2>
+        <div class="hint">Pick 3–6 strong ones. Keep them results-focused.</div>
+      </div>
+
+      <div class="grid-3">
+        <!-- PROJECT CARD -->
+        <div class="card proj">
+          <div class="proj-top">
+            <div>
+              <h3>Robotics waypoint follower (Pure Pursuit)</h3>
+              <div class="meta">Simulation • control • navigation</div>
+            </div>
+            <span class="badge">Featured</span>
+          </div>
+          <p style="margin:10px 0 0; color:var(--muted); font-size:14px;">
+            Implemented a waypoint tracking controller and tested it in simulation. Focused on stability,
+            tuning, and clean visualization of tracking error over time.
+          </p>
+          <div class="tags">
+            <span class="tag">Python</span>
+            <span class="tag">Control</span>
+            <span class="tag">Robotics</span>
+          </div>
+          <div class="proj-links">
+            <a href="#" target="_blank" rel="noreferrer">Code</a>
+            <a href="#" target="_blank" rel="noreferrer">Demo</a>
+            <a href="#" target="_blank" rel="noreferrer">Write-up</a>
+          </div>
+        </div>
+
+        <div class="card proj">
+          <div class="proj-top">
+            <div>
+              <h3>Signal cleanup: Kalman-based outlier rejection</h3>
+              <div class="meta">Filtering • estimation • data</div>
+            </div>
+            <span class="badge">DSP</span>
+          </div>
+          <p style="margin:10px 0 0; color:var(--muted); font-size:14px;">
+            Replaced simple smoothing with a Kalman filter approach to reject outliers and improve state
+            estimates in noisy sensor/trajectory logs.
+          </p>
+          <div class="tags">
+            <span class="tag">Kalman filter</span>
+            <span class="tag">Python</span>
+            <span class="tag">Data analysis</span>
+          </div>
+          <div class="proj-links">
+            <a href="#" target="_blank" rel="noreferrer">Code</a>
+            <a href="#" target="_blank" rel="noreferrer">Results</a>
+          </div>
+        </div>
+
+        <div class="card proj">
+          <div class="proj-top">
+            <div>
+              <h3>Embedded sensor logger</h3>
+              <div class="meta">Microcontroller • sensors • logging</div>
+            </div>
+            <span class="badge">HW</span>
+          </div>
+          <p style="margin:10px 0 0; color:var(--muted); font-size:14px;">
+            Built a small data logger for sensor readings with timestamped output and a simple analysis
+            pipeline. (Replace with your real project.)
+          </p>
+          <div class="tags">
+            <span class="tag">C/C++</span>
+            <span class="tag">I2C/SPI</span>
+            <span class="tag">Serial</span>
+          </div>
+          <div class="proj-links">
+            <a href="#" target="_blank" rel="noreferrer">Code</a>
+            <a href="#" target="_blank" rel="noreferrer">Photos</a>
+          </div>
+        </div>
+
+        <!-- Add more cards by copying one -->
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <div class="section-head">
+        <h2>Skills</h2>
+        <div class="hint">Keep it credible: list what you can demonstrate.</div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card skillbox">
+          <h3>Engineering</h3>
+          <div class="chips">
+            <span class="chip">Embedded systems</span>
+            <span class="chip">Sensors & measurement</span>
+            <span class="chip">Control systems</span>
+            <span class="chip">System identification</span>
+            <span class="chip">Signal processing</span>
+            <span class="chip">Circuit analysis</span>
+          </div>
+        </div>
+
+        <div class="card skillbox">
+          <h3>Tools & languages</h3>
+          <div class="chips">
+            <span class="chip">Python</span>
+            <span class="chip">MATLAB</span>
+            <span class="chip">C/C++</span>
+            <span class="chip">Git</span>
+            <span class="chip">Linux</span>
+            <span class="chip">LaTeX</span>
+            <span class="chip">HTML/CSS</span>
+          </div>
+        </div>
+
+        <div class="card skillbox">
+          <h3>What I bring to a team</h3>
+          <div class="chips">
+            <span class="chip">Clear communication</span>
+            <span class="chip">Fast prototyping</span>
+            <span class="chip">Documentation</span>
+            <span class="chip">Debugging mindset</span>
+            <span class="chip">Ownership</span>
+          </div>
+        </div>
+
+        <div class="card skillbox">
+          <h3>Other interests</h3>
+          <div class="chips">
+            <span class="chip">Photography</span>
+            <span class="chip">Music (bass/piano/ukulele)</span>
+            <span class="chip">DJing</span>
+            <span class="chip">Web projects</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE / EDUCATION -->
+    <section id="experience">
+      <div class="section-head">
+        <h2>Education & experience</h2>
+        <div class="hint">Short, scannable, impact-first.</div>
+      </div>
+
+      <div class="card timeline">
+        <div class="item">
+          <div class="row">
+            <div class="title">BSc Electrical Engineering</div>
+            <div class="when">YYYY — Present • (University / School)</div>
+          </div>
+          <p class="desc">
+            Relevant coursework: electronic circuits, control systems, system identification, signal processing.
+            (Edit this to match your program.)
+          </p>
+        </div>
+
+        <div class="item">
+          <div class="row">
+            <div class="title">Project / Internship / Team role</div>
+            <div class="when">YYYY • Company / Team</div>
+          </div>
+          <p class="desc">
+            One sentence on what you did + one measurable outcome. Example: “Improved measurement reliability by
+            implementing filtering and validation logic, reducing outlier spikes.”
+          </p>
+        </div>
+
+        <div class="item">
+          <div class="row">
+            <div class="title">Leadership / volunteering</div>
+            <div class="when">YYYY • Organization</div>
+          </div>
+          <p class="desc">
+            If relevant: chairman / board roles, organizing, coordination, etc. Keep it factual.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="section-head">
+        <h2>Contact</h2>
+        <div class="hint">Make it effortless to reach you.</div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card" style="padding:16px;">
+          <h3 style="margin:0 0 10px; font-size:16px;">Let’s talk</h3>
+          <p style="margin:0; color:var(--muted); font-size:14px;">
+            I’m open to internships / junior roles in embedded systems, control, measurement, or robotics.
+            Best way to reach me:
+          </p>
+          <div class="sep"></div>
+          <p style="margin:0; color:var(--muted); font-size:14px;">
+            Email: <a href="mailto:you@mkooltjes.nl">you@mkooltjes.nl</a><br/>
+            GitHub: <a href="https://github.com/" target="_blank" rel="noreferrer">github.com/yourname</a><br/>
+            LinkedIn: <a href="#" target="_blank" rel="noreferrer">linkedin.com/in/yourname</a>
+          </p>
+        </div>
+
+        <div class="card" style="padding:16px;">
+          <h3 style="margin:0 0 10px; font-size:16px;">Make this site yours</h3>
+          <ul class="list" style="margin-top:0;">
+            <li>Replace placeholder links (GitHub/LinkedIn/CV)</li>
+            <li>Swap the 3 project cards with your strongest projects</li>
+            <li>Add screenshots + a short “What I learned” per project</li>
+            <li>Keep the page to ~60–90 seconds of reading</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <div>© <span id="y"></span> Michael Kooltjes • Built with GitHub Pages</div>
+      <div class="mono">mkooltjes.nl</div>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
