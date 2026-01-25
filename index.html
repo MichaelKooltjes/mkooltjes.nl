@@ -3,198 +3,183 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Michael Kooltjes — Electrical Engineering (TU/e)</title>
-  <meta name="description" content="Portfolio of an Electrical Engineering student at TU/e. Programming-focused projects and skills." />
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <title>Michael Kooltjes</title>
+  <meta name="description" content="Michael Kooltjes — Electrical Engineer" />
+  <style>
+    :root{
+      --bg:#1f162b;
+      --card:rgba(255,255,255,.06);
+      --text:#e9eef5;
+      --muted:#a9b4c2;
+      --border:rgba(255,255,255,.12);
+      --accent:#c718c7;
+      --shadow:0 10px 30px rgba(0, 0, 0, 0.349);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 800px at 10% 10%, rgba(102, 54, 214, 0.349), transparent 55%),
+        radial-gradient(900px 600px at 90% 20%, rgba(196, 25, 145, 0.267), transparent 60%),
+        var(--bg);
+      line-height:1.5;
+    }
+    a{color:inherit}
+    .wrap{max-width:980px;margin:0 auto;padding:28px 18px 60px}
+    header{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:26px}
+    .brand{display:flex;align-items:center;gap:12px;min-width:0}
+    .avatar{
+      width:90px;
+      height:90px;
+      border-radius:16px;
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      object-fit:cover;
+      object-position:center;
+      display:block;
+    }
+
+    .brand h1{margin:0;font-size:16px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .brand p{margin:0;font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .card{
+      border:1px solid var(--border);
+      background:var(--card);
+      border-radius:18px;
+      padding:18px;
+      box-shadow:var(--shadow);
+    }
+    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:start}
+    @media (max-width:820px){.hero{grid-template-columns:1fr}}
+    .title{margin:0 0 8px;font-size:34px;line-height:1.15;letter-spacing:-.6px}
+    .subtitle{margin:0 0 16px;color:var(--muted);font-size:15px}
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.06);
+      text-decoration:none;
+      transition:transform .12s ease, border-color .12s ease, background .12s ease;
+    }
+    .btn:hover{ transform:translateY(-1px); border-color:rgba(255,255,255,.22); }
+    .btn:active{ transform:translateY(0); }
+
+    .btn.primary{
+      border-color:rgba(50, 17, 54, 0.226);
+      background:
+        radial-gradient(120% 140% at 20% 10%, rgba(190, 10, 214, 0.411), transparent 55%),
+        rgba(73, 11, 60, 0.06);
+      box-shadow:
+        0 10px 30px rgba(0,0,0,.35),
+        0 0 0 1px rgba(115, 5, 129, 0.1) inset;
+    }
+    .btn.primary:hover{
+      border-color:rgba(150, 43, 221, 0.55);
+      background:
+        radial-gradient(120% 140% at 20% 10%, rgba(208, 114, 245, 0.33), transparent 55%),
+        rgba(255,255,255,.07);
+    }
+
+    .section-title{margin:0 0 8px;font-size:14px;letter-spacing:.2px;color:var(--muted);text-transform:uppercase}
+    ul.clean{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+    .item strong{display:block;font-size:14px;margin-bottom:2px}
+    .item span{display:block;font-size:13px;color:var(--muted)}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+    @media (max-width:820px){.grid{grid-template-columns:1fr}}
+    footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+  </style>
 </head>
 
 <body>
-  <header class="nav">
-    <div class="nav-inner">
-      <a class="brand" href="#top" aria-label="Go to top">
-        <span class="dot" aria-hidden="true"></span>
-        <span>Michael Kooltjes</span>
-      </a>
-
-      <nav class="nav-links" aria-label="Primary">
-        <a class="pill" href="#projects">Projects</a>
-        <a class="pill" href="#skills">Skills</a>
-        <a class="pill" href="#about">About</a>
-        <a class="pill" href="#contact">Contact</a>
-      </nav>
-    </div>
-  </header>
-
-  <main id="top" class="wrap">
-    <!-- HERO -->
-    <section class="hero">
-      <div class="card hero-main">
-        <div class="kicker">
-          <span class="badge">Electrical Engineering • TU/e</span>
-          <span class="badge">Programming-focused</span>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <img class="avatar" src="assets/profile.jpg" alt="Profile photo" />
+        <div>
+          <h1>Michael Kooltjes</h1>
+          <p>BSc Electrical Engineering — TU Eindhoven · Graduating summer 2026</p>
         </div>
+      </div>
+    </header>
 
-        <h1>Electrical Engineering student who enjoys building software that interacts with real systems.</h1>
-
+    <main class="hero">
+      <section class="card">
+        <h2 class="title">Hi, I’m Michael.</h2>
         <p class="subtitle">
-          I study Electrical Engineering at the Technical University of Eindhoven (TU/e). I’m most at home on the
-          programming side of engineering — writing clean code, building tools, and making systems behave reliably.
+          I’m an Electrical Engineering student at <strong>TU Eindhoven</strong>, graduating this summer.
+          I’m looking for an opportunity where I can apply strong fundamentals, build practical systems, and keep learning fast.
         </p>
 
-        <div class="cta-row">
-          <a class="btn primary" href="#contact">Contact</a>
-          <a class="btn" href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
-
-          <!-- Placeholder until you create it -->
-          <a class="btn" href="#" target="_blank" rel="noreferrer" id="linkedinLink">LinkedIn</a>
-
-          <!-- Works when you add assets/files/cv.pdf -->
-          <a class="btn" href="assets/files/cv.pdf" download>Download CV (PDF)</a>
+        <div class="actions">
+          <!-- Replace these with your real links -->
+          <a class="btn primary" href="mailto:michael.kooltjes@gmail.com">Email</a>
+          <a class="btn" href="https://www.linkedin.com/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a class="btn" href="./Michael_Kooltjes_CV.pdf" target="_blank" rel="noreferrer">CV</a>
         </div>
+      </section>
 
-        <div class="sep"></div>
-
-        <div class="mini-grid">
-          <div>
-            <div class="mono label">Currently</div>
-            <div class="muted">
-              Electrical Engineering @ TU/e • building programming-heavy hobby projects • open to opportunities
-            </div>
-          </div>
-          <div>
-            <div class="mono label">Interests</div>
-            <div class="muted">
-              C / C# / Python • tooling • embedded-adjacent software • data & signal handling
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <aside class="card hero-side">
-        <div class="mini">
-          <h3>What I like working on</h3>
-          <ul>
-            <li>Small-to-medium projects with clean architecture</li>
-            <li>Anything involving sensors/data streams or control logic</li>
-            <li>Automation & developer tools</li>
-          </ul>
-        </div>
-
-        <div class="mini">
-          <h3>Quick highlights</h3>
-          <ul>
-            <li>Programming-first engineer mindset</li>
-            <li>Comfortable with Linux + Git</li>
-            <li>Clear documentation and reproducible work</li>
-          </ul>
-        </div>
+      <aside class="card">
+        <p class="section-title">Quick info</p>
+        <ul class="clean">
+          <li class="item">
+            <strong>Location</strong>
+            <span>Eindhoven, NL</span>
+          </li>
+          <li class="item">
+            <strong>Interests</strong>
+            <span>Programming · Embedded systems · Control · Signal processing · Robotics</span>
+          </li>
+          <li class="item">
+            <strong>Contact info</strong>
+            <span>michael.kooltjes@gmail.com</span>
+          </li>
+        </ul>
       </aside>
-    </section>
 
-    <!-- PROJECTS -->
-    <section id="projects">
-      <div class="section-head">
-        <h2>Selected projects</h2>
-        <p class="hint">Replace these placeholders with your real projects as you go.</p>
-      </div>
-
-      <div class="grid-3" id="projectsGrid">
-        <!-- Filled by JS from main.js -->
-      </div>
-    </section>
-
-    <!-- SKILLS -->
-    <section id="skills">
-      <div class="section-head">
-        <h2>Skills</h2>
-        <p class="hint">Keep it honest: list what you can demonstrate.</p>
-      </div>
-
-      <div class="grid-2">
-        <div class="card box">
-          <h3>Engineering & problem solving</h3>
-          <div class="chips">
-            <span class="chip">Programming-first mindset</span>
-            <span class="chip">Debugging</span>
-            <span class="chip">Systems thinking</span>
-            <span class="chip">Signal/data handling</span>
-            <span class="chip">Basic control concepts</span>
+      <section class="card" style="grid-column:1/-1">
+        <div class="grid">
+          <div>
+            <p class="section-title">Skills</p>
+            <ul class="clean">
+              <li class="item">
+                <strong>Core</strong>
+                <span>C · C# · Python · MATLAB · Circuit design</span>
+              </li>
+              <li class="item">
+                <strong>Tools</strong>
+                <span>Git · Windows · Linux</span>
+              </li>
+            </ul>
           </div>
-        </div>
-
-        <div class="card box">
-          <h3>Languages & tools</h3>
-          <div class="chips">
-            <span class="chip">C</span>
-            <span class="chip">C#</span>
-            <span class="chip">Python</span>
-            <span class="chip">Git</span>
-            <span class="chip">Linux</span>
-            <span class="chip">MATLAB (basic)</span>
-            <span class="chip">HTML/CSS (basic)</span>
+          
+          <div>
+            <p class="section-title">Personal info</p>
+            <ul class="clean">
+              <li class="item">
+                <strong>Hobbies</strong>
+                <span>Gaming · Music · Cheerleading</span>
+              </li>
+              <li class="item">
+                <strong>Languages</strong>
+                <span>Dutch · English · Spanish</span>
+              </li>
+            </ul>
           </div>
+
+          
         </div>
-      </div>
-    </section>
+      </section>
+    </main>
 
-    <!-- ABOUT -->
-    <section id="about">
-      <div class="section-head">
-        <h2>About</h2>
-        <p class="hint">A short paragraph that makes you memorable.</p>
-      </div>
+    <footer>© <span id="y"></span> Michael Kooltjes</footer>
+  </div>
 
-      <div class="card box">
-        <p class="muted">
-          I’m an Electrical Engineering student at TU/e who leans into the software side: building reliable code,
-          writing tools that make life easier, and learning by doing. Outside of engineering, I’m into photography
-          and music (bass, piano, ukulele, DJing), which keeps me creative and detail-oriented.
-        </p>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact">
-      <div class="section-head">
-        <h2>Contact</h2>
-        <p class="hint">Make it easy for people to reach you.</p>
-      </div>
-
-      <div class="grid-2">
-        <div class="card box">
-          <h3>Let’s connect</h3>
-          <p class="muted">
-            I’m not aiming for one specific role yet, but I strongly prefer programming-heavy work.
-            If you think I’d fit your team, feel free to reach out.
-          </p>
-
-          <div class="sep"></div>
-
-          <p class="muted">
-            Email: <a href="mailto:you@mkooltjes.nl">you@mkooltjes.nl</a><br/>
-            GitHub: <a href="https://github.com/" target="_blank" rel="noreferrer">github.com/yourname</a><br/>
-            LinkedIn: <a href="#" target="_blank" rel="noreferrer" id="linkedinLink2">add later</a>
-          </p>
-        </div>
-
-        <div class="card box">
-          <h3>Quick edits</h3>
-          <ul class="muted">
-            <li>Edit text in <span class="mono">index.html</span></li>
-            <li>Change styling in <span class="mono">assets/css/style.css</span></li>
-            <li>Edit projects + links in <span class="mono">assets/js/main.js</span></li>
-            <li>Add CV as <span class="mono">assets/files/cv.pdf</span></li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <div>© <span id="year"></span> Michael Kooltjes • mkooltjes.nl</div>
-      <div class="mono">Built with GitHub Pages</div>
-    </footer>
-  </main>
-
-  <script src="assets/js/main.js"></script>
+  <script>document.getElementById("y").textContent=new Date().getFullYear()</script>
 </body>
 </html>
