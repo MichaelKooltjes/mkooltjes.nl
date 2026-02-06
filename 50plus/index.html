@@ -199,21 +199,19 @@
         <div class="logo" aria-hidden>DB</div>
         <div>
           <h1>Datumberekening</h1>
-          <p class="lead">Snel dagen optellen/ aftrekken — handige tool voor op werk</p>
+          <p class="lead">datum uitrekenen</p>
         </div>
       </div>
-      <div style="margin-left:auto" class="chip" aria-hidden>Offline</div>
     </header>
 
     <main class="card" role="main" aria-labelledby="appTitle">
-      <h2 id="appTitle" style="margin:0 0 .6rem 0;">Instellingen</h2>
+      <h2 id="appTitle" style="margin:0 0 .6rem 0;">Opties</h2>
 
       <div class="grid">
         <section>
           <div class="field" style="margin-bottom:.6rem;">
-            <label for="baseDate">Basisdatum</label>
+            <label for="baseDate">Datum</label>
             <input id="baseDate" type="date" class="control" aria-describedby="baseDateHint">
-            <div id="baseDateHint" class="small muted">Standaard ingesteld op vandaag.</div>
           </div>
 
           <div class="row" style="margin-bottom:.6rem;">
@@ -239,11 +237,8 @@
 
           <div style="display:flex;gap:.6rem;align-items:center;margin-bottom:.6rem;">
             <button id="computeBtn" class="btn" aria-controls="resultArea">Bereken</button>
-            <button id="resetBtn" class="btn secondary" title="Reset naar standaardwaardes">Reset</button>
-            <div style="margin-left:auto" class="small muted">Resultaat wordt zichtbaar aan de rechterkant</div>
+            <button id="resetBtn" class="btn secondary" title="Reset naar standaardwaardes">Vandaag</button>
           </div>
-
-          <div class="notice">Tip: je kunt direct in het <em>Aantal dagen</em>-veld een nieuw getal typen en op Bereken klikken. Kopieer resultaten met de knop "Kopieer".</div>
         </section>
 
         <aside>
@@ -262,7 +257,7 @@
 
             <div class="result" aria-live="polite">
               <div class="info">
-                <div class="muted">14 dagen geleden (vanaf basisdatum)</div>
+                <div class="muted">14 dagen daarvoor</div>
                 <div id="minus14Human" class="big">—</div>
                 <div id="minus14Iso" class="small muted">—</div>
               </div>
