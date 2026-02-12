@@ -247,18 +247,18 @@
               <div id="resultHuman" class="big">—</div>
               <div id="resultIso" class="small muted">—</div>
             </div>
-
-
-            <div class="result" aria-live="polite">
-              <div class="info">
-                <div class="muted">Klanten vanaf deze datum zijn in hun herroepingsperiode</div>
-                <div id="minus14Human" class="big">—</div>
-                <div id="minus14Iso" class="small muted">—</div>
-              </div>
-            </div>
           </div>
+        </div>
+
+        <div class="result" aria-live="polite">
+          <div class="info">
+            <div class="muted">Klanten vanaf deze datum zijn in hun herroepingsperiode</div>
+            <div id="minus14Human" class="big">—</div>
+            <div id="minus14Iso" class="small muted">—</div>
+          </div>
+        </div>
       </div>
-       </div>
+      
 
       <div class="footer">
         <div>2026</div>
@@ -276,7 +276,7 @@
       return `${y}-${m}-${day}`;
     }
     // Human readable format in Dutch
-    const humanFormatter = new Intl.DateTimeFormat('nl-NL', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' });
+    const humanFormatter = new Intl.DateTimeFormat('nl-NL', { day: '2-digit', month: 'short', year: 'numeric' });
 
     function parseInputDate(value){
       // value expected "YYYY-MM-DD"
