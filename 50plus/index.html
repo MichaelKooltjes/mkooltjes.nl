@@ -297,6 +297,7 @@
 
     // Elements
     const baseDateEl = document.getElementById('baseDate');
+    const baseDateEl = document.getElementById('baseDate');
     const daysEl = document.getElementById('days');
     const modeAddEl = document.getElementById('modeAdd');
     const modeSubtractEl = document.getElementById('modeSubtract');
@@ -335,6 +336,7 @@
       }
 
       // 14 dagen geleden tov basisdatum
+      const today = new Date();
       const minus14 = addDays(toInputDateString(today), -14);
       minus14Human.textContent = humanFormatter.format(minus14);
       minus14Iso.textContent = toInputDateString(minus14);
