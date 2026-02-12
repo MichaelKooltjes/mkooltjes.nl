@@ -262,6 +262,16 @@
             <div id="minus120Iso" class="small muted">—</div>
           </div>
         </div>
+
+      <div class="result" aria-live="polite">
+          <div class="info">
+            <div class="muted">Hoeveelheid dagen tot datum</div>
+            <div id="remainingDaysHuman" class="big">—</div>
+            <div id="remainingDaysIso" class="small muted">—</div>
+          </div>
+        </div>
+
+      
       </div>
       
 
@@ -314,6 +324,8 @@
     const minus14Iso = document.getElementById('minus14Iso');
     const minus14Human = document.getElementById('minus120Human');
     const minus14Iso = document.getElementById('minus120Iso');
+    const remainingDaysHuman = document.getElementById('remainingDaysHuman');
+    const remainingDaysIso = document.getElementById('remainingDaysIso');
 
     // Defaults
     const DEFAULT_DAYS = 120;
@@ -340,6 +352,8 @@
         minus14Iso.textContent = '—';
         minus120Human.textContent = '—';
         minus120Iso.textContent = '—';
+        remainingDaysHuman.textContent = '—';
+        remainingDaysIso.textContent = '—';
         return;
       }
 
@@ -358,9 +372,12 @@
       const mode = document.querySelector('input[name="mode"]:checked') ? document.querySelector('input[name="mode"]:checked').value : DEFAULT_MODE;
       const delta = (mode === 'add') ? n : -n;
       const result = addDays(base, delta);
+      const remainingDays = addDays(base, -new Date());
 
       resultHuman.textContent = humanFormatter.format(result);
       resultIso.textContent = toInputDateString(result);
+      remainingDaysHuman.textContent = humanFormatter.format(remainingDays);
+      remainingDaysIso.textContent = toInputDateString(remainingDays);
     }
 
     // Event listeners
