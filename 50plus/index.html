@@ -226,12 +226,11 @@
           <div style="display:flex;flex-direction:column;gap:.6rem;">
             <div class="result" aria-live="polite" id="resultArea">
               <div class="info">
-                <div class="row" style="margin-bottom:.6rem;">
+                <div style="margin-bottom:.6rem;">
                   <div>
                     <label for="days">Aantal dagen</label>
                     <input id="days" type="number" class="control" min="0" step="1" inputmode="numeric">
                   </div>
-      
                   <div>
                     <div class="toggle" role="radiogroup" aria-label="Kies optellen of aftrekken">
                       <label style="display:inline-flex;align-items:center;gap:.4rem;">
@@ -312,10 +311,6 @@
     const minus14Human = document.getElementById('minus14Human');
     const minus14Iso = document.getElementById('minus14Iso');
 
-    const copyResultBtn = document.getElementById('copyResult');
-    const copyMinus14Btn = document.getElementById('copyMinus14');
-    const copiedBadge = document.getElementById('copiedBadge');
-
     // Defaults
     const DEFAULT_DAYS = 120;
     const DEFAULT_MODE = 'subtract';
@@ -379,29 +374,6 @@
       setDefaults();
       // small visual feedback
       copiedBadge.style.display = 'none';
-    });
-
-    // Copy utility
-    async function copyText(text, badgeEl){
-      try{
-        await navigator.clipboard.writeText(text);
-        if(badgeEl){
-          badgeEl.style.display = 'block';
-          setTimeout(()=> badgeEl.style.display = 'none', 1600);
-        }
-      }catch(e){
-        alert('Kopiëren mislukt. Gebruik Ctrl/Cmd+C om handmatig te kopiëren.');
-      }
-    }
-
-    copyResultBtn.addEventListener('click', function(){
-      const txt = resultIso.textContent.trim();
-      if(txt && txt !== '—') copyText(txt, copiedBadge);
-    });
-
-    copyMinus14Btn.addEventListener('click', function(){
-      const txt = minus14Iso.textContent.trim();
-      if(txt && txt !== '—') copyText(txt, null);
     });
 
     // Initialize on load
