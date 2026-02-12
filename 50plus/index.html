@@ -291,7 +291,7 @@
       return `${y}-${m}-${day}`;
     }
     // Human readable format in Dutch
-    const humanFormatter = new Intl.DateTimeFormat('nl-NL', { day: '2-digit', month: 'short', year: 'numeric' });
+    const humanFormatter = new Intl.DateTimeFormat('nl-NL', {day: '2-digit', month: 'short', year: 'numeric' });
 
     function parseInputDate(value){
       // value expected "YYYY-MM-DD"
@@ -322,8 +322,8 @@
     const resultIso = document.getElementById('resultIso');
     const minus14Human = document.getElementById('minus14Human');
     const minus14Iso = document.getElementById('minus14Iso');
-    const minus14Human = document.getElementById('minus120Human');
-    const minus14Iso = document.getElementById('minus120Iso');
+    const minus120Human = document.getElementById('minus120Human');
+    const minus120Iso = document.getElementById('minus120Iso');
     const remainingDaysHuman = document.getElementById('remainingDaysHuman');
     const remainingDaysIso = document.getElementById('remainingDaysIso');
 
