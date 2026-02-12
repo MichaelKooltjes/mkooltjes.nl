@@ -222,41 +222,38 @@
           </div>
         </section>
 
-        <aside>
-          <div style="display:flex;flex-direction:column;gap:.6rem;">
-            <div class="result" aria-live="polite" id="resultArea">
-              <div class="info">
-                <div style="margin-bottom:.6rem;">
-                  <div>
-                    <label for="days">Aantal dagen</label>
-                    <input id="days" type="number" class="control" min="0" step="1" inputmode="numeric">
-                  </div>
-                  <div>
-                    <div class="toggle" role="radiogroup" aria-label="Kies optellen of aftrekken">
-                      <label style="display:inline-flex;align-items:center;gap:.4rem;">
-                        <input type="radio" name="mode" value="subtract" id="modeSubtract">
-                        <span class="small">Aftrekken</span>
-                      </label>
-                      <label style="display:inline-flex;align-items:center;gap:.4rem;">
-                        <input type="radio" name="mode" value="add" id="modeAdd">
-                        <span class="small">Optellen</span>
-                      </label>
-                    </div>
+
+        <div style="display:flex;flex-direction:column;gap:.6rem;">
+          <div class="result" aria-live="polite" id="resultArea">
+            <div class="info">
+              <div style="margin-bottom:.6rem;">
+                <div>
+                  <label for="days">Aantal dagen</label>
+                  <input id="days" type="number" class="control" min="0" step="1" inputmode="numeric">
+                </div>
+                <div>
+                  <div class="toggle" role="radiogroup" aria-label="Kies optellen of aftrekken">
+                    <label style="display:inline-flex;align-items:center;gap:.4rem;">
+                      <input type="radio" name="mode" value="subtract" id="modeSubtract">
+                      <span class="small">Aftrekken</span>
+                    </label>
+                    <label style="display:inline-flex;align-items:center;gap:.4rem;">
+                      <input type="radio" name="mode" value="add" id="modeAdd">
+                      <span class="small">Optellen</span>
+                    </label>
                   </div>
                 </div>
-                <div id="resultHuman" class="big">—</div>
-                <div id="resultIso" class="small muted">—</div>
               </div>
+              <div id="resultHuman" class="big">—</div>
+              <div id="resultIso" class="small muted">—</div>
             </div>
+
 
             <div class="result" aria-live="polite">
               <div class="info">
-                <div class="muted">14 dagen daarvoor</div>
+                <div class="muted">Klanten vanaf deze datum zijn in hun herroepingsperiode</div>
                 <div id="minus14Human" class="big">—</div>
                 <div id="minus14Iso" class="small muted">—</div>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:.6rem;align-items:flex-end">
-                <button class="copy" id="copyMinus14" title="Kopieer datum 14 dagen geleden">Kopieer</button>
               </div>
             </div>
           </div>
@@ -338,7 +335,7 @@
       }
 
       // 14 dagen geleden tov basisdatum
-      const minus14 = addDays(base, -14);
+      const minus14 = addDays(toInputDateString(today), -14);
       minus14Human.textContent = humanFormatter.format(minus14);
       minus14Iso.textContent = toInputDateString(minus14);
 
