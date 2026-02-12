@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Datumberekening - Tool</title>
+  <title>50+ Mobiel tools</title>
   <style>
     :root{
       --bg:#f5f7fb;
@@ -198,14 +198,14 @@
       <div class="brand">
         <div class="logo" aria-hidden>50+</div>
         <div>
-          <h1>Datumberekening</h1>
-          <p class="lead">datum uitrekenen</p>
+          <h1>Datum Rekenmachine</h1>
+          <p class="lead">datum gerelateerde tools</p>
         </div>
       </div>
     </header>
 
     <main class="card" role="main" aria-labelledby="appTitle">
-      <h2 id="appTitle" style="margin:0 0 .6rem 0;">Opties</h2>
+      <h2 id="appTitle" style="margin:0 0 .6rem 0;">Datum</h2>
 
       <div class="grid">
         <section>
@@ -214,26 +214,7 @@
             <input id="baseDate" type="date" class="control" aria-describedby="baseDateHint">
           </div>
 
-          <div class="row" style="margin-bottom:.6rem;">
-            <div style="flex:1;">
-              <label for="days">Aantal dagen</label>
-              <input id="days" type="number" class="control" min="0" step="1" inputmode="numeric">
-            </div>
-
-            <div style="flex:1;">
-              <label>Actie</label>
-              <div class="toggle" role="radiogroup" aria-label="Kies optellen of aftrekken">
-                <label style="display:inline-flex;align-items:center;gap:.4rem;">
-                  <input type="radio" name="mode" value="subtract" id="modeSubtract">
-                  <span class="small">Aftrekken</span>
-                </label>
-                <label style="display:inline-flex;align-items:center;gap:.4rem;">
-                  <input type="radio" name="mode" value="add" id="modeAdd">
-                  <span class="small">Optellen</span>
-                </label>
-              </div>
-            </div>
-          </div>
+          
 
           <div style="display:flex;gap:.6rem;align-items:center;margin-bottom:.6rem;">
             <button id="computeBtn" class="btn" aria-controls="resultArea">Bereken</button>
@@ -245,6 +226,26 @@
           <div style="display:flex;flex-direction:column;gap:.6rem;">
             <div class="result" aria-live="polite" id="resultArea">
               <div class="info">
+                <div class="row" style="margin-bottom:.6rem;">
+                  <div style="flex:1;">
+                    <label for="days">Aantal dagen</label>
+                    <input id="days" type="number" class="control" min="0" step="1" inputmode="numeric">
+                  </div>
+      
+                  <div style="flex:1;">
+                    <label>Actie</label>
+                    <div class="toggle" role="radiogroup" aria-label="Kies optellen of aftrekken">
+                      <label style="display:inline-flex;align-items:center;gap:.4rem;">
+                        <input type="radio" name="mode" value="subtract" id="modeSubtract">
+                        <span class="small">Aftrekken</span>
+                      </label>
+                      <label style="display:inline-flex;align-items:center;gap:.4rem;">
+                        <input type="radio" name="mode" value="add" id="modeAdd">
+                        <span class="small">Optellen</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
                 <div class="muted">Resultaat</div>
                 <div id="resultHuman" class="big">—</div>
                 <div id="resultIso" class="small muted">—</div>
