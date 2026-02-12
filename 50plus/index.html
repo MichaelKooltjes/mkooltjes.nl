@@ -372,7 +372,10 @@
       const mode = document.querySelector('input[name="mode"]:checked') ? document.querySelector('input[name="mode"]:checked').value : DEFAULT_MODE;
       const delta = (mode === 'add') ? n : -n;
       const result = addDays(base, delta);
-      const remainingDays = addDays(base, -new Date());
+      
+      // const remainingDays = addDays(base, -new Date());
+      const now = new Date();
+      remainingDays.setDate(base - now);
 
       resultHuman.textContent = humanFormatter.format(result);
       resultIso.textContent = toInputDateString(result);
