@@ -104,7 +104,7 @@
     }
 
     .btn{
-      background:var(--accent);
+      background:linear-gradient(160deg,var(--accent),#9532c9);
       color:white;
       border:none;
       padding:.55rem .8rem;
@@ -177,13 +177,13 @@
 
     @media (min-width:820px) {
     .grid {
-    /* grid balance */
+    /* linker kolom smaller dan rechter kolom */
     grid-template-columns: 45% 55%;
     grid-auto-rows: auto;
     gap: 1rem;
     }
 
-    /* 2x2 grid */
+    /* Zorg dat de eerste grid-child beide rijen in de linkerkolom beslaat */
     .grid > :first-child {
     grid-row: 1 / span 2;
     }
@@ -191,6 +191,7 @@
     .row { flex-wrap: nowrap; }
     }
 
+    /* small helpers */
     .chip{
       background:#f1f5f9;padding:.35rem .5rem;border-radius:999px;font-size:.85rem;color:var(--muted);
     }
