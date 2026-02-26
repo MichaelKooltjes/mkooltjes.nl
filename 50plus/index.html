@@ -44,7 +44,7 @@
       align-items:center;
     }
     .logo{
-      width:44px;height:44px;border-radius:.6rem;background:linear-gradient(135deg,var(--accent),#7db5ff);
+      width:44px;height:44px;border-radius:.6rem;background:linear-gradient(135deg,var(--accent),#9532c9);
       display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:1.05rem;
       box-shadow:var(--shadow);
     }
@@ -175,14 +175,22 @@
       font-size:.9rem;
     }
 
-    @media(min-width:820px){
-      .grid{
-        grid-template-columns: 1fr 360px;
-      }
-      .row{flex-wrap:nowrap}
+    @media (min-width:820px) {
+    .grid {
+    /* grid balance */
+    grid-template-columns: 45% 55%;
+    grid-auto-rows: auto;
+    gap: 1rem;
     }
 
-    /* small helpers */
+    /* 2x2 grid */
+    .grid > :first-child {
+    grid-row: 1 / span 2;
+    }
+
+    .row { flex-wrap: nowrap; }
+    }
+
     .chip{
       background:#f1f5f9;padding:.35rem .5rem;border-radius:999px;font-size:.85rem;color:var(--muted);
     }
@@ -223,7 +231,17 @@
         </section>
 
     <div class="grid">
+    <div>
         <div style="display:flex;flex-direction:column;gap:.6rem;">
+        
+          <div class="result" aria-live="polite">
+            <div class="info">
+              <div class="muted">Hoeveelheid dagen tot datum</div>
+              <div id="remainingDaysHuman" class="big">—</div>
+              <div id="remainingDaysIso" class="small muted">—</div>
+            </div>
+          </div>
+        
           <div class="result" aria-live="polite" id="resultArea">
             <div class="info">
               <div style="margin-bottom:.6rem;">
@@ -249,29 +267,26 @@
             </div>
           </div>
         </div>
+	</div>
 
+<div style="display:flex;flex-direction:column;gap:.6rem;">
         <div class="result" aria-live="polite">
           <div class="info">
             <div class="muted">Klanten vanaf deze datum zijn in hun herroepingsperiode</div>
             <div id="minus14Human" class="big">—</div>
             <div id="minus14Iso" class="small muted">—</div>
           </div>
+        </div>
+        
+        <div class="result" aria-live="polite">
           <div class="info">
             <div class="muted">Als het contract eindigt voor deze datum kunnen zij een overstap regelen</div>
             <div id="minus120Human" class="big">—</div>
             <div id="minus120Iso" class="small muted">—</div>
           </div>
         </div>
-
-      <div class="result" aria-live="polite">
-          <div class="info">
-            <div class="muted">Hoeveelheid dagen tot datum</div>
-            <div id="remainingDaysHuman" class="big">—</div>
-            <div id="remainingDaysIso" class="small muted">—</div>
-          </div>
-        </div>
-
-      
+ </div>
+       
       </div>
       
 
@@ -284,130 +299,144 @@
 
   <script>
     // Helper: format date to YYYY-MM-DD (no timezone shift)
-    function toInputDateString(d){
-      const y = d.getFullYear();
-      const m = String(d.getMonth()+1).padStart(2,'0');
-      const day = String(d.getDate()).padStart(2,'0');
-      return `${y}-${m}-${day}`;
-    }
-    // Human readable format in Dutch
-    const humanFormatter = new Intl.DateTimeFormat('nl-NL', {day: '2-digit', month: 'short', year: 'numeric' });
+function toInputDateString(d){
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+// Human readable format in Dutch
+const humanFormatter = new Intl.DateTimeFormat('nl-NL', {day: '2-digit', month: 'short', year: 'numeric' });
 
-    function parseInputDate(value){
-      // value expected "YYYY-MM-DD"
-      if(!value) return null;
-      const parts = value.split('-');
-      if(parts.length !== 3) return null;
-      const y = parseInt(parts[0],10);
-      const m = parseInt(parts[1],10)-1;
-      const d = parseInt(parts[2],10);
-      return new Date(y, m, d);
-    }
+function parseInputDate(value){
+  // value expected "YYYY-MM-DD"
+  if(!value) return null;
+  const parts = value.split('-');
+  if(parts.length !== 3) return null;
+  const y = parseInt(parts[0],10);
+  const m = parseInt(parts[1],10)-1;
+  const d = parseInt(parts[2],10);
+  return new Date(y, m, d);
+}
 
-    function addDays(date, days){
-      const r = new Date(date.getTime());
-      r.setDate(r.getDate() + days);
-      return r;
-    }
+function addDays(date, days){
+  const r = new Date(date.getTime());
+  r.setDate(r.getDate() + days);
+  return r;
+}
 
-    // Elements
-    const baseDateEl = document.getElementById('baseDate');
-    const daysEl = document.getElementById('days');
-    const modeAddEl = document.getElementById('modeAdd');
-    const modeSubtractEl = document.getElementById('modeSubtract');
-    const computeBtn = document.getElementById('computeBtn');
-    const resetBtn = document.getElementById('resetBtn');
+// Elements
+const baseDateEl = document.getElementById('baseDate');
+const daysEl = document.getElementById('days');
+const modeAddEl = document.getElementById('modeAdd');
+const modeSubtractEl = document.getElementById('modeSubtract');
+const computeBtn = document.getElementById('computeBtn');
+const resetBtn = document.getElementById('resetBtn');
 
-    const resultHuman = document.getElementById('resultHuman');
-    const resultIso = document.getElementById('resultIso');
-    const minus14Human = document.getElementById('minus14Human');
-    const minus14Iso = document.getElementById('minus14Iso');
-    const minus120Human = document.getElementById('minus120Human');
-    const minus120Iso = document.getElementById('minus120Iso');
-    const remainingDaysHuman = document.getElementById('remainingDaysHuman');
-    const remainingDaysIso = document.getElementById('remainingDaysIso');
+const resultHuman = document.getElementById('resultHuman');
+const resultIso = document.getElementById('resultIso');
+const minus14Human = document.getElementById('minus14Human');
+const minus14Iso = document.getElementById('minus14Iso');
+const minus120Human = document.getElementById('minus120Human');
+const minus120Iso = document.getElementById('minus120Iso');
+const remainingDaysHuman = document.getElementById('remainingDaysHuman');
+const remainingDaysIso = document.getElementById('remainingDaysIso');
 
-    // Defaults
-    const DEFAULT_DAYS = 120;
-    const DEFAULT_MODE = 'subtract';
+// Defaults
+const DEFAULT_DAYS = 120;
+const DEFAULT_MODE = 'subtract';
 
-    function setDefaults(){
-      const today = new Date();
-      baseDateEl.value = toInputDateString(today);
-      daysEl.value = DEFAULT_DAYS;
-      if(DEFAULT_MODE === 'subtract'){
-        modeSubtractEl.checked = true;
-      } else {
-        modeAddEl.checked = true;
-      }
-      updateAll();
-    }
+function setDefaults(){
+  const today = new Date();
+  baseDateEl.value = toInputDateString(today);
+  daysEl.value = DEFAULT_DAYS;
+  if(DEFAULT_MODE === 'subtract'){
+    modeSubtractEl.checked = true;
+  } else {
+    modeAddEl.checked = true;
+  }
+  updateAll();
+}
 
-    function updateAll(){
-      const base = parseInputDate(baseDateEl.value);
-      if(!base){
-        resultHuman.textContent = 'Ongeldige datum';
-        resultIso.textContent = '—';
-        minus14Human.textContent = '—';
-        minus14Iso.textContent = '—';
-        minus120Human.textContent = '—';
-        minus120Iso.textContent = '—';
-        remainingDaysHuman.textContent = '—';
-        remainingDaysIso.textContent = '—';
-        return;
-      }
+function updateAll(){
+  const base = parseInputDate(baseDateEl.value);
+  if(!base){
+    resultHuman.textContent = 'Ongeldige datum';
+    resultIso.textContent = '—';
+    minus14Human.textContent = '—';
+    minus14Iso.textContent = '—';
+    minus120Human.textContent = '—';
+    minus120Iso.textContent = '—';
+    remainingDaysHuman.textContent = '—';
+    remainingDaysIso.textContent = '—';
+    return;
+  }
 
-      // 14 dagen geleden tov basisdatum
-      const today = new Date();
-      const minus14 = addDays(new Date(), -14);
-      const minus120 = addDays(new Date(), 120);
-      minus14Human.textContent = humanFormatter.format(minus14);
-      minus14Iso.textContent = toInputDateString(minus14);
-      minus120Human.textContent = humanFormatter.format(minus120);
-      minus120Iso.textContent = toInputDateString(minus120);
+  // 14 dagen geleden tov nu
+  const today = new Date();
+  const minus14 = addDays(new Date(), -14);
+  const minus120 = addDays(new Date(), 120);
+  minus14Human.textContent = humanFormatter.format(minus14);
+  minus14Iso.textContent = toInputDateString(minus14);
+  minus120Human.textContent = humanFormatter.format(minus120);
+  minus120Iso.textContent = toInputDateString(minus120);
 
-      // compute result
-      let n = parseInt(daysEl.value, 10);
-      if(Number.isNaN(n) || n < 0) n = 0; // safety
-      const mode = document.querySelector('input[name="mode"]:checked') ? document.querySelector('input[name="mode"]:checked').value : DEFAULT_MODE;
-      const delta = (mode === 'add') ? n : -n;
-      const result = addDays(base, delta);
-      
-      // const remainingDays = addDays(base, -new Date());
-      const now = new Date();
-      remainingDays.setDate(base - now);
+  // compute result
+  let n = parseInt(daysEl.value, 10);
+  if(Number.isNaN(n) || n < 0) n = 0; // safety
+  const mode = document.querySelector('input[name="mode"]:checked') ? document.querySelector('input[name="mode"]:checked').value : DEFAULT_MODE;
+  const delta = (mode === 'add') ? n : -n;
+  const result = addDays(base, delta);
 
-      resultHuman.textContent = humanFormatter.format(result);
-      resultIso.textContent = toInputDateString(result);
-      remainingDaysHuman.textContent = humanFormatter.format(remainingDays);
-      remainingDaysIso.textContent = toInputDateString(remainingDays);
-    }
+  // remaining days until base (difference between base date and today, in whole days)
+  const msPerDay = 24 * 60 * 60 * 1000;
+  // Use UTC dates to avoid timezone partial-day issues
+  const utcBase = Date.UTC(base.getFullYear(), base.getMonth(), base.getDate());
+  const utcNow = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+  const diffDays = Math.ceil((utcBase - utcNow) / msPerDay); // positive => in the future
 
-    // Event listeners
-    computeBtn.addEventListener('click', function(){
-      updateAll();
-      // focus result for keyboard users
-      resultHuman.focus?.();
-    });
+  let remainingText;
+  if(diffDays === 0){
+    remainingText = 'Vandaag';
+  } else if(diffDays > 0){
+    remainingText = `${diffDays} dag${diffDays === 1 ? '' : 'en'}`;
+  } else {
+    remainingText = `${Math.abs(diffDays)} dag${Math.abs(diffDays) === 1 ? '' : 'en'} geleden`;
+  }
 
-    // Live updates on change for convenience
-    [baseDateEl, daysEl].forEach(el => {
-      el.addEventListener('change', updateAll);
-      el.addEventListener('input', () => {
-        // don't spam if user types, but update live for responsiveness
-        updateAll();
-      });
-    });
-    document.querySelectorAll('input[name="mode"]').forEach(r => r.addEventListener('change', updateAll));
+  resultHuman.textContent = humanFormatter.format(result);
+  resultIso.textContent = toInputDateString(result);
+  remainingDaysHuman.textContent = remainingText;
+  // Show the base date ISO in the small line for context
+  remainingDaysIso.textContent = toInputDateString(base);
+}
 
-    resetBtn.addEventListener('click', function(){
-      setDefaults();
-      // small visual feedback
-      copiedBadge.style.display = 'none';
-    });
+// Event listeners
+computeBtn.addEventListener('click', function(){
+  updateAll();
+  // focus result for keyboard users if possible
+  if (typeof resultHuman.focus === 'function') {
+    resultHuman.focus();
+  }
+});
 
-    // Initialize on load
-    document.addEventListener('DOMContentLoaded', setDefaults);
+// Live updates on change for convenience
+[baseDateEl, daysEl].forEach(el => {
+  el.addEventListener('change', updateAll);
+  el.addEventListener('input', () => {
+    // live update for responsiveness
+    updateAll();
+  });
+});
+document.querySelectorAll('input[name="mode"]').forEach(r => r.addEventListener('change', updateAll));
+
+resetBtn.addEventListener('click', function(){
+  setDefaults();
+  // removed reference to non-existing UI element
+});
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', setDefaults);
   </script>
 </body>
 </html>
