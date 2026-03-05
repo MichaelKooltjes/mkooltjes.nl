@@ -63,6 +63,7 @@
       gap:1rem;
       grid-template-columns:1fr;
       margin-top:1rem;
+      margin-right: 1rem;
     }
 
     .row{
@@ -119,14 +120,70 @@
       border:1px solid #e6edf3;
     }
 
-    .toggle{
-      display:inline-flex;
-      gap:.5rem;
-      align-items:center;
-      background:#f8fafc;
-      padding:.35rem;
-      border-radius:.5rem;
-      border:1px solid #f1f5f9;
+    /* New toggle styling: rounded left-right switch */
+    .toggle {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+      padding: 0px;
+      background: #f3f6fb;
+      border-radius: 200px;
+      border: 0.5px solid #e6edf3;
+      min-width: 150px;
+      width: 100%;
+      max-width: 200px;
+      box-sizing: border-box;
+    }
+    .toggle .option {
+      position: relative;
+      z-index: 2;
+      flex: 1 1 50%;
+      text-align: center;
+      padding: .45rem .5rem;
+      cursor: pointer;
+      border-radius: 999px;
+      font-size: .9rem;
+      color: var(--muted);
+      user-select: none;
+      transition: color .15s ease;
+    }
+    /* visual knob */
+    .toggle .knob {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      width: calc(50% - 5px);
+      height: calc(100% - 10px);
+      background: linear-gradient(160deg,var(--accent),#9532c9);
+      border-radius: 999px;
+      box-shadow: 0 6px 14px rgba(16,24,40,0.12);
+      transition: transform .18s cubic-bezier(.2,.9,.2,1), background .18s ease;
+      z-index: 1;
+      pointer-events: none;
+    }
+    /* when 'add' is selected, move knob to the right */
+    .toggle[data-value="add"] .knob {
+      transform: translateX(100%);
+    }
+    /* active text color for the selected option */
+    .toggle[data-value="subtract"] .option[data-value="subtract"],
+    .toggle[data-value="add"] .option[data-value="add"] {
+      color: white;
+      font-weight: 600;
+    }
+
+    /* Visually hide the radio inputs but keep them accessible */
+    .sr-radio {
+      position: absolute !important;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+      border: 0;
     }
 
     .result{
@@ -230,6 +287,7 @@
             <button id="resetBtn" class="btn secondary" title="Reset naar standaardwaardes">Vandaag</button>
           </div>
         </section>
+        
 
     <div class="grid">
     <div>
@@ -251,15 +309,17 @@
                   <input id="days" type="number" class="control" min="0" step="1" inputmode="numeric">
                 </div>
                 <div>
-                  <div class="toggle" role="radiogroup" aria-label="Kies optellen of aftrekken">
-                    <label style="display:inline-flex;align-items:center;gap:.4rem;">
-                      <input type="radio" name="mode" value="subtract" id="modeSubtract">
-                      <span class="small">Aftrekken</span>
+                  <!-- New toggle: left-right rounded switch -->
+                  <div class="toggle" role="radiogroup" aria-label="Kies optellen of aftrekken" id="modeToggle" data-value="subtract">
+                    <label class="option" data-value="subtract">
+                      <input class="sr-radio" type="radio" name="mode" value="subtract" id="modeSubtract">
+                      <span>Aftrekken</span>
                     </label>
-                    <label style="display:inline-flex;align-items:center;gap:.4rem;">
-                      <input type="radio" name="mode" value="add" id="modeAdd">
-                      <span class="small">Optellen</span>
+                    <label class="option" data-value="add">
+                      <input class="sr-radio" type="radio" name="mode" value="add" id="modeAdd">
+                      <span>Optellen</span>
                     </label>
+                    <div class="knob" aria-hidden="true"></div>
                   </div>
                 </div>
               </div>
@@ -269,8 +329,7 @@
           </div>
         </div>
 	</div>
-
-<div style="display:flex;flex-direction:column;gap:.6rem;">
+    <div style="display:flex;flex-direction:column;gap:1.2rem;">
         <div class="result" aria-live="polite">
           <div class="info">
             <div class="muted">Klanten vanaf deze datum zijn in hun herroepingsperiode</div>
@@ -343,6 +402,9 @@ const minus120Iso = document.getElementById('minus120Iso');
 const remainingDaysHuman = document.getElementById('remainingDaysHuman');
 const remainingDaysIso = document.getElementById('remainingDaysIso');
 
+const modeToggle = document.getElementById('modeToggle');
+const toggleOptions = modeToggle.querySelectorAll('.option');
+
 // Defaults
 const DEFAULT_DAYS = 120;
 const DEFAULT_MODE = 'subtract';
@@ -356,7 +418,22 @@ function setDefaults(){
   } else {
     modeAddEl.checked = true;
   }
+  syncToggleUI();
   updateAll();
+}
+
+function syncToggleUI(){
+  // Keep the visual toggle in sync with the checked radio
+  const checkedInput = document.querySelector('input[name="mode"]:checked');
+  const val = checkedInput ? checkedInput.value : DEFAULT_MODE;
+  modeToggle.dataset.value = val;
+  toggleOptions.forEach(opt => {
+    if(opt.dataset.value === val){
+      opt.classList.add('active');
+    } else {
+      opt.classList.remove('active');
+    }
+  });
 }
 
 function updateAll(){
@@ -373,7 +450,7 @@ function updateAll(){
     return;
   }
 
-  // 14 dagen geleden tov nu
+  // 14 dagen geleden tov nu and 120 dagen vanaf nu (kept original semantics)
   const today = new Date();
   const minus14 = addDays(new Date(), -14);
   const minus120 = addDays(new Date(), 120);
@@ -385,7 +462,8 @@ function updateAll(){
   // compute result
   let n = parseInt(daysEl.value, 10);
   if(Number.isNaN(n) || n < 0) n = 0; // safety
-  const mode = document.querySelector('input[name="mode"]:checked') ? document.querySelector('input[name="mode"]:checked').value : DEFAULT_MODE;
+  const checked = document.querySelector('input[name="mode"]:checked');
+  const mode = checked ? checked.value : DEFAULT_MODE;
   const delta = (mode === 'add') ? n : -n;
   const result = addDays(base, delta);
 
@@ -429,11 +507,32 @@ computeBtn.addEventListener('click', function(){
     updateAll();
   });
 });
-document.querySelectorAll('input[name="mode"]').forEach(r => r.addEventListener('change', updateAll));
+
+// Keep toggle in sync when radios change
+document.querySelectorAll('input[name="mode"]').forEach(r => {
+  r.addEventListener('change', () => {
+    syncToggleUI();
+    updateAll();
+  });
+});
+
+// Clicking the visual option labels should toggle the radio as well
+toggleOptions.forEach(opt => {
+  opt.addEventListener('click', (e) => {
+    const val = opt.dataset.value;
+    const input = opt.querySelector('input[name="mode"]');
+    if(input){
+      input.checked = true;
+      syncToggleUI();
+      updateAll();
+      // move focus to the hidden radio for keyboard users
+      input.focus();
+    }
+  });
+});
 
 resetBtn.addEventListener('click', function(){
   setDefaults();
-  // removed reference to non-existing UI element
 });
 
 // Initialize on load
