@@ -144,7 +144,7 @@
 
   .die-count-badge { position: absolute; top: 4px; right: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--amber); font-weight: 500; }
 
-  /* dX CELL — sides input only, no qty */
+  /* dX CELL */
   .dx-cell {
     display: flex; flex-direction: column;
     border: 1px solid var(--border); border-radius: var(--radius);
@@ -170,7 +170,7 @@
   .dx-input-wrap input::placeholder { font-size: 9px; color: var(--muted); }
   .dx-input-wrap input:focus { outline: none; box-shadow: none; }
 
-  /* D20 ROW — full width with adv/dis on the right */
+  /* D20 ROW */
   .d20-main {
     display: flex; align-items: stretch;
     border: 1px solid var(--border); border-radius: var(--radius);
@@ -282,18 +282,20 @@
   .stat-card.is-highest .stat-indicator { color: var(--amber); }
   .stat-card.is-lowest .stat-indicator { color: var(--red); }
   .stat-card .stat-main { display: inline-flex; align-items: flex-start; justify-content: center; gap: 8px; margin-bottom: 4px; }
-  .stat-card .stat-value { font-family: 'Cinzel', serif; font-size: 30px; font-weight: 700; color: var(--white); line-height: 1; transition: color 0.2s; }
+  .stat-card .stat-value-input { width: 58px; text-align: center; padding: 0; background: transparent; border: none; color: var(--white); font-family: 'Cinzel', serif; font-size: 30px; font-weight: 700; line-height: 1; transition: color 0.2s; }
+  .stat-card .stat-value-input:focus { outline: none; box-shadow: none; border: none; }
+  .stat-card .stat-value-input::-webkit-outer-spin-button, .stat-card .stat-value-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
   .stat-card .stat-mod { font-size: 11px; color: var(--muted); line-height: 1; padding-top: 6px; }
   .stat-card .stat-rolls { display: flex; gap: 3px; justify-content: center; margin-top: 6px; flex-wrap: wrap; }
   .stat-card .roll-pip { font-size: 10px; padding: 1px 4px; border-radius: 2px; border: 1px solid var(--border); color: var(--muted); }
   .stat-card .roll-pip.kept { color: var(--text); border-color: var(--amber-dim); }
   .stat-card .roll-pip.dropped-pip { text-decoration: line-through; opacity: 0.3; }
-  .stat-card.high  .stat-value { color: var(--amber); }
-  .stat-card.vhigh .stat-value { color: #f7d060; text-shadow: 0 0 12px var(--amber-glow); }
-  .stat-card.low   .stat-value { color: var(--red); }
+  .stat-card.high  .stat-value-input { color: var(--amber); }
+  .stat-card.vhigh .stat-value-input { color: #f7d060; text-shadow: 0 0 12px var(--amber-glow); }
+  .stat-card.low   .stat-value-input { color: var(--red); }
   .reroll-single { background: none; border: none; color: var(--muted); font-size: 10px; cursor: pointer; padding: 2px 4px; border-radius: 2px; transition: color var(--transition); font-family: 'IBM Plex Mono', monospace; }
   .reroll-single:hover { color: var(--amber); }
-  .stat-total-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0 0; border-top: 1px solid var(--border); font-size: 12px; color: var(--muted); }
+  .stat-total-row { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; padding: 12px 0 0; border-top: 1px solid var(--border); font-size: 12px; color: var(--muted); text-align: center; }
   .stat-total-row strong { color: var(--white); font-size: 15px; }
   .point-buy-note { font-size: 10px; color: var(--muted); text-align: center; margin-top: 8px; font-style: italic; }
   .class-suggestions-box { margin-top: 14px; padding: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); }
@@ -303,7 +305,7 @@
   .class-section-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-top: 12px; margin-bottom: 8px; }
   .class-section-label:first-child { margin-top: 0; }
   .class-pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
-  .class-pill { position: relative; display: inline-flex; align-items: center; padding: 7px 11px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface2); color: var(--text); font-size: 11px; cursor: pointer; transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition), color var(--transition), background var(--transition); }
+  .class-pill { position: relative; display: inline-flex; align-items: center; gap: 10px; padding: 7px 11px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface2); color: var(--text); font-size: 11px; cursor: pointer; transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition), color var(--transition), background var(--transition); }
   .class-pill:hover { transform: translateY(-1px); }
   .class-pill[data-color="barbarian"]:hover, .class-pill[data-color="barbarian"].active { border-color: #b34a36; color: #ffb39d; box-shadow: 0 0 0 1px #b34a3644, 0 0 16px #b34a3622; background: #b34a3614; }
   .class-pill[data-color="bard"]:hover, .class-pill[data-color="bard"].active { border-color: #b04cc2; color: #edc2ff; box-shadow: 0 0 0 1px #b04cc244, 0 0 16px #b04cc222; background: #b04cc214; }
@@ -329,6 +331,14 @@
   .class-detail-body p + p { margin-top: 8px; }
   .class-detail-link { display: inline-flex; margin-top: 10px; color: var(--amber); text-decoration: none; border-bottom: 1px solid transparent; }
   .class-detail-link:hover { border-bottom-color: var(--amber); }
+  .hp-meter-wrap { display: inline-flex; align-items: center; gap: 8px; margin-left: auto; }
+  .hp-meter-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .hp-meter { display: grid; grid-template-columns: repeat(4, 10px); gap: 4px; }
+  .hp-seg { width: 10px; height: 18px; border-radius: 3px; border: 1px solid var(--border); background: var(--bg); }
+  .hp-seg.filled.hp-1 { background: #c94040; border-color: #c94040; }
+  .hp-seg.filled.hp-2 { background: #d98c3b; border-color: #d98c3b; }
+  .hp-seg.filled.hp-3 { background: #c9b84b; border-color: #c9b84b; }
+  .hp-seg.filled.hp-4 { background: #3aad6e; border-color: #3aad6e; }
 
   .action-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; align-items: center; }
   ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
@@ -376,7 +386,7 @@
         </div>
       </div>
 
-      <!-- d20 row -->
+      <!-- d20 row: full-width, separated, most-used die -->
       <div class="d20-row">
         <div class="d20-main">
           <button class="d20-die-btn" onclick="addToQueue(20)" title="Add d20">
@@ -385,10 +395,10 @@
             <span id="badge-20"></span>
           </button>
           <div class="adv-mini-col">
-            <button class="adv-mini-btn" id="advBtn" onclick="toggleAdv('adv')" title="Advantage — roll 2d20, keep highest">
+            <button class="adv-mini-btn" id="advBtn" onclick="toggleAdv('adv')" title="Advantage | roll 2d20, keep highest">
               ▲<span class="adv-label">adv</span>
             </button>
-            <button class="adv-mini-btn" id="disBtn" onclick="toggleAdv('dis')" title="Disadvantage — roll 2d20, keep lowest">
+            <button class="adv-mini-btn" id="disBtn" onclick="toggleAdv('dis')" title="Disadvantage | roll 2d20, keep lowest">
               ▼<span class="adv-label">dis</span>
             </button>
           </div>
@@ -436,32 +446,32 @@
     </div>
     <div class="panel-body">
       <p style="color:var(--muted);font-size:11px;margin-bottom:16px;">
-        Rolls 4d6 for each of the 6 ability scores, drops the lowest die. Scores are assigned in order, then you can drag stat cards to swap them.
+        Rolls 4d6 for each of the 6 ability scores, drops the lowest die. Click individual stats to reroll them.
       </p>
       <div class="stat-grid" id="statGrid">
-        <div class="stat-card" id="stat-STR" data-stat="STR" draggable="true"><div class="stat-indicator"></div><div class="stat-name">STR</div><div class="stat-main"><div class="stat-value">—</div><div class="stat-mod">—</div></div><div class="stat-rolls"></div><button class="reroll-single" onclick="rerollSingleStat('STR'); event.stopPropagation();">↺ reroll</button></div>
-        <div class="stat-card" id="stat-DEX" data-stat="DEX" draggable="true"><div class="stat-indicator"></div><div class="stat-name">DEX</div><div class="stat-main"><div class="stat-value">—</div><div class="stat-mod">—</div></div><div class="stat-rolls"></div><button class="reroll-single" onclick="rerollSingleStat('DEX'); event.stopPropagation();">↺ reroll</button></div>
-        <div class="stat-card" id="stat-CON" data-stat="CON" draggable="true"><div class="stat-indicator"></div><div class="stat-name">CON</div><div class="stat-main"><div class="stat-value">—</div><div class="stat-mod">—</div></div><div class="stat-rolls"></div><button class="reroll-single" onclick="rerollSingleStat('CON'); event.stopPropagation();">↺ reroll</button></div>
-        <div class="stat-card" id="stat-INT" data-stat="INT" draggable="true"><div class="stat-indicator"></div><div class="stat-name">INT</div><div class="stat-main"><div class="stat-value">—</div><div class="stat-mod">—</div></div><div class="stat-rolls"></div><button class="reroll-single" onclick="rerollSingleStat('INT'); event.stopPropagation();">↺ reroll</button></div>
-        <div class="stat-card" id="stat-WIS" data-stat="WIS" draggable="true"><div class="stat-indicator"></div><div class="stat-name">WIS</div><div class="stat-main"><div class="stat-value">—</div><div class="stat-mod">—</div></div><div class="stat-rolls"></div><button class="reroll-single" onclick="rerollSingleStat('WIS'); event.stopPropagation();">↺ reroll</button></div>
-        <div class="stat-card" id="stat-CHA" data-stat="CHA" draggable="true"><div class="stat-indicator"></div><div class="stat-name">CHA</div><div class="stat-main"><div class="stat-value">—</div><div class="stat-mod">—</div></div><div class="stat-rolls"></div><button class="reroll-single" onclick="rerollSingleStat('CHA'); event.stopPropagation();">↺ reroll</button></div>
+        <div class="stat-card" id="stat-STR" data-stat="STR" draggable="true"><div class="stat-indicator"></div><div class="stat-name">STR</div><div class="stat-main"><input class="stat-value-input" type="number" min="1" max="30" value="" placeholder="—" aria-label="Strength score"><div class="stat-mod">—</div></div><div class="stat-rolls"></div><button class="reroll-single" onclick="rerollSingleStat('STR'); event.stopPropagation();">↺ reroll</button></div>
+        <div class="stat-card" id="stat-DEX" data-stat="DEX" draggable="true"><div class="stat-indicator"></div><div class="stat-name">DEX</div><div class="stat-main"><input class="stat-value-input" type="number" min="1" max="30" value="" placeholder="—" aria-label="Dexterity score"><div class="stat-mod">—</div></div><div class="stat-rolls"></div><button class="reroll-single" onclick="rerollSingleStat('DEX'); event.stopPropagation();">↺ reroll</button></div>
+        <div class="stat-card" id="stat-CON" data-stat="CON" draggable="true"><div class="stat-indicator"></div><div class="stat-name">CON</div><div class="stat-main"><input class="stat-value-input" type="number" min="1" max="30" value="" placeholder="—" aria-label="Constitution score"><div class="stat-mod">—</div></div><div class="stat-rolls"></div><button class="reroll-single" onclick="rerollSingleStat('CON'); event.stopPropagation();">↺ reroll</button></div>
+        <div class="stat-card" id="stat-INT" data-stat="INT" draggable="true"><div class="stat-indicator"></div><div class="stat-name">INT</div><div class="stat-main"><input class="stat-value-input" type="number" min="1" max="30" value="" placeholder="—" aria-label="Intelligence score"><div class="stat-mod">—</div></div><div class="stat-rolls"></div><button class="reroll-single" onclick="rerollSingleStat('INT'); event.stopPropagation();">↺ reroll</button></div>
+        <div class="stat-card" id="stat-WIS" data-stat="WIS" draggable="true"><div class="stat-indicator"></div><div class="stat-name">WIS</div><div class="stat-main"><input class="stat-value-input" type="number" min="1" max="30" value="" placeholder="—" aria-label="Wisdom score"><div class="stat-mod">—</div></div><div class="stat-rolls"></div><button class="reroll-single" onclick="rerollSingleStat('WIS'); event.stopPropagation();">↺ reroll</button></div>
+        <div class="stat-card" id="stat-CHA" data-stat="CHA" draggable="true"><div class="stat-indicator"></div><div class="stat-name">CHA</div><div class="stat-main"><input class="stat-value-input" type="number" min="1" max="30" value="" placeholder="—" aria-label="Charisma score"><div class="stat-mod">—</div></div><div class="stat-rolls"></div><button class="reroll-single" onclick="rerollSingleStat('CHA'); event.stopPropagation();">↺ reroll</button></div>
       </div>
       <div class="stat-total-row" id="statTotalRow" style="display:none;">
-        <span>Total Score</span>
+        <span>Total Score Sum</span>
         <strong id="statSum">—</strong>
         <span id="statRating" style="font-size:11px;"></span>
       </div>
       <div class="point-buy-note" id="pointBuyNote" style="display:none;"></div>
       <div class="action-row" style="margin-top:16px;">
-        <button class="btn btn-primary" onclick="rollAllStats()">⚄ Roll Stats</button>
+        <button class="btn btn-primary" onclick="rollAllStats()">⚄ Roll All Stats</button>
         <button class="btn" onclick="clearStats()">Clear</button>
       </div>
       <div class="class-suggestions-box">
-        <div class="label">Class suggestions</div>
+        <div class="label">Class Suggestions</div>
         <div id="classSuggestionsContent" class="class-suggestions-empty">Roll all stats to see classes that match your highest stat.</div>
         <div id="classSuggestionDetail" class="class-detail-card"></div>
       </div>
-</div>
+    </div>
   </div>
 
 </main>
@@ -647,7 +657,7 @@ function rollAll() {
   if (advMode === 'adv') labelText += ' (advantage)';
   if (advMode === 'dis') labelText += ' (disadvantage)';
   if (isCrit)   labelText += ' | CRITICAL HIT!';
-  if (isFumble) labelText += ' | CRITICAL FAIL! LLLLL';
+  if (isFumble) labelText += ' | CRITICAL FAIL!';
   document.getElementById('resultLabel').textContent = labelText;
 
   const bdEl = document.getElementById('resultBreakdown');
@@ -716,18 +726,18 @@ const PRIMARY_STAT_CLASSES = {
 };
 
 const CLASS_DATA = {
-  Barbarian: { color: 'barbarian', summary: 'A fierce warrior of primal rage', details: 'Barbarians are mighty warriors who are powered by primal forces of the multiverse that manifest as a Rage. More than a mere emotion—and not limited to anger—this Rage is an incarnation of a predator’s ferocity, a storm’s fury, and a sea’s turmoil.', link: 'https://www.dndbeyond.com/classes/2190875-barbarian' },
-  Bard: { color: 'bard', summary: 'An inspiring performer of music, dance and magic', details: 'Invoking magic through music, dance, and verse, Bards are expert at inspiring others, soothing hurts, disheartening foes, and creating illusions. Bards believe the multiverse was spoken into existence and that remnants of its Words of Creation still resound and glimmer on every plane of existence. Bardic magic attempts to harness those words, which transcend any language.', link: 'https://www.dndbeyond.com/classes/2190876-bard' },
-  Cleric: { color: 'cleric', summary: 'A miraculous priest of divine power', details: 'Clerics draw power from the realms of the gods and harness it to work miracles. Blessed by a deity, a pantheon, or another immortal entity, a Cleric can reach out to the divine magic of the Outer Planes—where gods dwell—and channel it to bolster people and battle foes.', link: 'https://www.dndbeyond.com/classes/2190877-cleric' },
-  Druid: { color: 'druid', summary: 'A nature priest of primal power', details: 'Druids belong to ancient orders that call on the forces of nature. Harnessing the magic of animals, plants, and the four elements, Druids heal, transform into animals, and wield elemental destruction.', link: 'https://www.dndbeyond.com/classes/2190878-druid' },
-  Fighter: { color: 'fighter', summary: 'A master of all arms and armor', details: 'Fighters rule many battlefields. Questing knights, royal champions, elite soldiers, and hardened mercenaries—as Fighters, they all share an unparalleled prowess with weapons and armor. And they are well acquainted with death, both meting it out and defying it.', link: 'https://www.dndbeyond.com/classes/2190879-fighter' },
-  Monk: { color: 'monk', summary: 'A martial artist of supernatural focus', details: 'Monks use rigorous combat training and mental discipline to align themselves with the multiverse and focus their internal reservoirs of power. Different Monks conceptualize this power in various ways: as breath, energy, life force, essence, or self, for example. Whether channeled as a striking display of martial prowess or as a subtler manifestation of defense and speed, this power infuses all that a Monk does.', link: 'https://www.dndbeyond.com/classes/2190880-monk' },
-  Paladin: { color: 'paladin', summary: 'A devout warrior of sacred oaths', details: 'Paladins are united by their oaths to stand against the forces of annihilation and corruption. Whether sworn before a god’s altar, in a sacred glade before nature spirits, or in a moment of desperation and grief with the dead as the only witnesses, a Paladin’s oath is a powerful bond. It is a source of power that turns a devout warrior into a blessed champion.', link: 'https://www.dndbeyond.com/classes/2190881-paladin' },
-  Ranger: { color: 'ranger', summary: 'A wandering warrior imbued with primal magic', details: 'Far from bustling cities, amid the trees of trackless forests and across wide plains, Rangers keep their unending watch in the wilderness. Rangers learn to track their quarry as a predator does, moving stealthily through the wilds and hiding themselves in brush and rubble.', link: 'https://www.dndbeyond.com/classes/2190882-ranger' },
-  Rogue: { color: 'rogue', summary: 'A dexterous expert in stealth and subterfuge', details: 'Rogues rely on cunning, stealth, and their foes’ vulnerabilities to get the upper hand in any situation. They have a knack for finding the solution to just about any problem. A few even learn magical tricks to supplement their other abilities. Many Rogues focus on stealth and deception, while others refine skills that help them in a dungeon environment, such as climbing, finding and disarming traps, and opening locks.', link: 'https://www.dndbeyond.com/classes/2190883-rogue' },
-  Sorcerer: { color: 'sorcerer', summary: 'A dazzling mage filled with innate magic', details: 'Sorcerers wield innate magic that is stamped into their being. Some Sorcerers can’t name the origin of their power, while others trace it to strange events in their personal or family history. The blessing of a dragon or a dryad at a baby’s birth or the strike of lightning from a clear sky might spark a Sorcerer’s gift. So too might the gift of a deity, exposure to the strange magic of another plane of existence, or a glimpse into the inner workings of reality. Whatever the origin, the result is an indelible mark on the Sorcerer, a churning magic that can be passed down through generations.', link: 'https://www.dndbeyond.com/classes/2190884-sorcerer' },
-  Warlock: { color: 'warlock', summary: 'An occultist empowered by otherworldly pacts', details: 'Warlocks quest for knowledge that lies hidden in the fabric of the multiverse. They often begin their search for magical power by delving into tomes of forbidden lore, dabbling in invocations meant to attract the power of extraplanar beings, or seeking places of power where the influence of these beings can be felt. In no time, each Warlock is drawn into a binding pact with a powerful patron. Drawing on the ancient knowledge of beings such as angels, archfey, demons, devils, hags, and alien entities of the Far Realm, Warlocks piece together arcane secrets to bolster their own power.', link: 'https://www.dndbeyond.com/classes/2190885-warlock' },
-  Wizard: { color: 'wizard', summary: 'A scholarly magic-user of arcane power', details: 'Wizards are defined by their exhaustive study of magic’s inner workings. They cast spells of explosive fire, arcing lightning, subtle deception, and spectacular transformations. Their magic conjures monsters from other planes of existence, glimpses the future, or forms protective barriers. Their mightiest spells change one substance into another, call meteors from the sky, or open portals to other worlds.', link: 'https://www.dndbeyond.com/classes/2190886-wizard' }
+  Barbarian: { color: 'barbarian', hpDie: 12, summary: 'A fierce warrior of primal rage.', details: 'Barbarians are mighty warriors powered by primal forces that manifest as Rage. They are durable front-line martial characters with Strength as their primary ability.', link: 'https://www.dndbeyond.com/classes/2190875-barbarian' },
+  Bard: { color: 'bard', hpDie: 8, summary: 'An inspiring performer of music, dance, and magic.', details: 'Bards use performance and words of creation to inspire allies, hinder foes, and shape magic. They are versatile Charisma-based spellcasters with strong support and utility.', link: 'https://www.dndbeyond.com/classes/2190876-bard' },
+  Cleric: { color: 'cleric', hpDie: 8, summary: 'A miraculous priest of divine power.', details: 'Clerics channel divine magic from gods or other immortal powers. They combine healing, protection, support, and reliable spellcasting with Wisdom as a core stat.', link: 'https://www.dndbeyond.com/classes/2190877-cleric' },
+  Druid: { color: 'druid', hpDie: 8, summary: 'A nature priest of primal power.', details: 'Druids wield primal magic tied to nature, beasts, and the elements. They are flexible Wisdom-based spellcasters with strong thematic identity and broad utility.', link: 'https://www.dndbeyond.com/classes/2190878-druid' },
+  Fighter: { color: 'fighter', hpDie: 10, summary: 'A master of all arms and armor.', details: 'Fighters are disciplined martial experts with broad weapon and armor mastery. They are dependable front-line characters that can be built around Strength or Dexterity.', link: 'https://www.dndbeyond.com/classes/2190879-fighter' },
+  Monk: { color: 'monk', hpDie: 8, summary: 'A martial artist of supernatural focus.', details: 'Monks use combat training and inner discipline to channel supernatural power. They favor agility, mobility, and technique, making Dexterity and Wisdom especially relevant.', link: 'https://www.dndbeyond.com/classes/2190880-monk' },
+  Paladin: { color: 'paladin', hpDie: 10, summary: 'A devout warrior of sacred oaths.', details: 'Paladins are oath-bound champions who combine martial combat, durability, healing, and divine power. Strength and Charisma are both important for many paladin builds.', link: 'https://www.dndbeyond.com/classes/2190881-paladin' },
+  Ranger: { color: 'ranger', hpDie: 10, summary: 'A wandering warrior imbued with primal magic.', details: 'Rangers are adaptable wilderness warriors who blend martial ability with primal magic. Dexterity and Wisdom are both common core stats depending on build.', link: 'https://www.dndbeyond.com/classes/2190882-ranger' },
+  Rogue: { color: 'rogue', hpDie: 8, summary: 'A dexterous expert in stealth and subterfuge.', details: 'Rogues rely on finesse, stealth, expertise, and exploiting openings. They are agile skill specialists who strongly favor Dexterity.', link: 'https://www.dndbeyond.com/classes/2190883-rogue' },
+  Sorcerer: { color: 'sorcerer', hpDie: 6, summary: 'A dazzling mage filled with innate magic.', details: 'Sorcerers wield magic that is embedded in their being rather than learned through study. They are Charisma-based full casters with a powerful innate magical identity.', link: 'https://www.dndbeyond.com/classes/2190884-sorcerer' },
+  Warlock: { color: 'warlock', hpDie: 8, summary: 'An occultist empowered by otherworldly pacts.', details: 'Warlocks seek hidden knowledge and power through a pact with an otherworldly patron. They are Charisma-based spellcasters with a distinct pact-driven fantasy.', link: 'https://www.dndbeyond.com/classes/2190885-warlock' },
+  Wizard: { color: 'wizard', hpDie: 6, summary: 'A scholarly magic-user of arcane power.', details: 'Wizards are defined by their exhaustive study of magic and their broad spell access. They are classic Intelligence-based full casters built around preparation and magical breadth.', link: 'https://www.dndbeyond.com/classes/2190886-wizard' }
 };
 
 function rollOneStat() {
@@ -741,12 +751,24 @@ function rollOneStat() {
   return { id: `score-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`, rolls, droppedIndex, total };
 }
 
+function setManualStatTotal(name, total) {
+  const clamped = Math.max(1, Math.min(30, total));
+  const existing = statValues[name];
+  if (existing) {
+    existing.total = clamped;
+    existing.isManual = true;
+  } else {
+    statValues[name] = { id: `manual-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`, rolls: [], droppedIndex: -1, total: clamped, isManual: true };
+  }
+}
+
 function abilityMod(score) {
   const mod = Math.floor((score - 10) / 2);
   return (mod >= 0 ? '+' : '') + mod;
 }
 
 function makeRollPips(data) {
+  if (!data || !Array.isArray(data.rolls) || !data.rolls.length) return '';
   return data.rolls.map((r, i) => `<span class="roll-pip ${i === data.droppedIndex ? 'dropped-pip' : 'kept'}">${r}</span>`).join('');
 }
 
@@ -761,7 +783,7 @@ function renderStatCard(name) {
     cls += ' empty-slot';
     card.className = cls;
     card.draggable = false;
-    card.querySelector('.stat-value').textContent = '—';
+    card.querySelector('.stat-value-input').value = '';
     card.querySelector('.stat-mod').textContent = '—';
     card.querySelector('.stat-rolls').innerHTML = '';
     return;
@@ -774,7 +796,7 @@ function renderStatCard(name) {
 
   card.className = cls;
   card.draggable = true;
-  card.querySelector('.stat-value').textContent = val;
+  card.querySelector('.stat-value-input').value = val;
   card.querySelector('.stat-mod').textContent = abilityMod(val);
   card.querySelector('.stat-rolls').innerHTML = makeRollPips(data);
 }
@@ -863,10 +885,15 @@ function setupStatDnD() {
   });
 }
 
+function getHpMeterHtml(hpDie) {
+  const filled = Math.max(1, Math.min(4, Math.round((hpDie - 6) / 2) + 1));
+  return `<div class="hp-meter-wrap"><span class="hp-meter-label">HP (d${hpDie})</span><div class="hp-meter" aria-label="Hit die d${hpDie}">${[1,2,3,4].map(i => `<span class="hp-seg ${i <= filled ? `filled hp-${filled}` : ''}"></span>`).join('')}</div></div>`;
+}
+
 function getClassPillHtml(className) {
   const data = CLASS_DATA[className];
   if (!data) return '';
-  return `<button class="class-pill" type="button" data-class="${className}" data-color="${data.color}" onclick="showClassDetail('${className}')">${className}<span class="class-pill-tooltip">${data.summary}</span></button>`;
+  return `<button class="class-pill" type="button" data-class="${className}" data-color="${data.color}" onclick="showClassDetail('${className}')">${className}${getHpMeterHtml(data.hpDie)}<span class="class-pill-tooltip">${data.summary}</span></button>`;
 }
 
 function renderClassGroup(label, classes) {
@@ -877,15 +904,17 @@ function renderClassGroup(label, classes) {
 function showClassDetail(className) {
   const data = CLASS_DATA[className];
   const detail = document.getElementById('classSuggestionDetail');
+  if (!detail) return;
   if (!data) { detail.className = 'class-detail-card'; detail.innerHTML = ''; return; }
   document.querySelectorAll('.class-pill').forEach(pill => pill.classList.toggle('active', pill.dataset.class === className));
   detail.className = 'class-detail-card active';
-  detail.innerHTML = `<div class="class-detail-title"><strong>${className}</strong><span class="class-detail-source">PHB 2024 / D&D Beyond</span></div><div class="class-detail-body"><p>${data.summary}</p><p>${data.details}</p><a class="class-detail-link" href="${data.link}" target="_blank" rel="noopener noreferrer">Open ${className} on D&D Beyond</a></div>`;
+  detail.innerHTML = `<div class="class-detail-title"><strong>${className}</strong><span class="class-detail-source">PHB 2024 / D&D Beyond</span></div><div class="class-detail-body"><p>${data.summary}</p><p>${data.details}</p><p><strong>Hit Point Die:</strong> d${data.hpDie}</p><a class="class-detail-link" href="${data.link}" target="_blank" rel="noopener noreferrer">Open ${className} on D&D Beyond</a></div>`;
 }
 
 function updateClassSuggestions(names) {
   const box = document.getElementById('classSuggestionsContent');
   const detail = document.getElementById('classSuggestionDetail');
+  if (!box || !detail) return;
   detail.className = 'class-detail-card';
   detail.innerHTML = '';
   if (!names.length) {
@@ -893,22 +922,38 @@ function updateClassSuggestions(names) {
     return;
   }
   const ranked = names.map(name => ({ stat: name, total: statValues[name].total })).sort((a, b) => b.total - a.total);
-  const highestStat = ranked[0].stat;
+  const topScore = ranked[0].total;
+  const highestStats = ranked.filter(item => item.total === topScore).map(item => item.stat);
   const sections = [];
-  if (highestStat === 'CON') {
-    sections.push('<div class="class-note"><strong>CON</strong> is highest, meaning you are likely built for durability and front-line combat.</div>');
-    const second = ranked.find(item => item.stat !== 'CON');
-    if (second) {
-      const secondClasses = PRIMARY_STAT_CLASSES[second.stat] || [];
-      if (secondClasses.length) sections.push(renderClassGroup(`Recommended from second-best stat (${second.stat})`, secondClasses));
-      else sections.push(`<div class="class-line"><strong>Second-best stat: ${second.stat}</strong> | no PHB 2024 class uses it as a main stat, so this spread is more about durability than a perfect primary-stat match.</div>`);
+
+  if (highestStats.includes('CON')) {
+    sections.push('<div class="class-note"><strong>CON</strong> is your highest stat, making your character sturdy and well-suited to front-line.</div>');
+    const otherHighest = highestStats.filter(stat => stat !== 'CON');
+    if (otherHighest.length) {
+      otherHighest.forEach(stat => {
+        const classes = PRIMARY_STAT_CLASSES[stat] || [];
+        if (classes.length) sections.push(renderClassGroup(`Frontliner pairing from tied highest stat (${stat})`, classes));
+      });
+    } else {
+      const secondScoreEntry = ranked.find(item => item.stat !== 'CON');
+      if (secondScoreEntry) {
+        const secondBestStats = ranked.filter(item => item.stat !== 'CON' && item.total === secondScoreEntry.total).map(item => item.stat);
+        secondBestStats.forEach(stat => {
+          const secondClasses = PRIMARY_STAT_CLASSES[stat] || [];
+          if (secondClasses.length) sections.push(renderClassGroup(`Recommended from second-best stat (${stat})`, secondClasses));
+          else sections.push(`<div class="class-line"><strong>Second-best stat: ${stat}</strong> | no PHB 2024 class uses it as a main stat, so this spread is more about durability than a perfect primary-stat match.</div>`);
+        });
+      }
     }
   } else {
-    sections.push(`<div class="class-note">Highest stat: <strong>${highestStat}</strong>. Hover a class for a quick summary, or click it for more detail and the D&D Beyond link.</div>`);
-    const highestClasses = PRIMARY_STAT_CLASSES[highestStat] || [];
-    if (highestClasses.length) sections.push(renderClassGroup(`Main-stat classes for ${highestStat}`, highestClasses));
-    else sections.push(`<div class="class-line"><strong>${highestStat}</strong> | no PHB 2024 class uses this as a sole main stat.</div>`);
+    sections.push(`<div class="class-note">Highest stat${highestStats.length > 1 ? 's' : ''}: <strong>${highestStats.join(', ')}</strong>. Hover a class for a quick summary, or click it for more detail and the D&D Beyond link.</div>`);
+    highestStats.forEach(stat => {
+      const highestClasses = PRIMARY_STAT_CLASSES[stat] || [];
+      if (highestClasses.length) sections.push(renderClassGroup(`Main-stat classes for ${stat}`, highestClasses));
+      else sections.push(`<div class="class-line"><strong>${stat}</strong> | no PHB 2024 class uses this as a sole main stat.</div>`);
+    });
   }
+
   box.innerHTML = sections.join('');
   const firstPill = box.querySelector('.class-pill');
   if (firstPill) showClassDetail(firstPill.dataset.class);
@@ -940,7 +985,27 @@ function clearStats() {
   updateClassSuggestions([]);
 }
 
+function setupStatInputs() {
+  STATS.forEach(name => {
+    const input = document.querySelector(`#stat-${name} .stat-value-input`);
+    input.addEventListener('click', e => e.stopPropagation());
+    input.addEventListener('input', () => {
+      const raw = parseInt(input.value, 10);
+      if (Number.isNaN(raw)) {
+        statValues[name] = null;
+        renderStatCard(name);
+        updateStatSummary();
+        return;
+      }
+      setManualStatTotal(name, raw);
+      renderStatCard(name);
+      updateStatSummary();
+    });
+  });
+}
+
 setupStatDnD();
+setupStatInputs();
 renderAllStatCards();
 updateClassSuggestions([]);
 
