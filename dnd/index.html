@@ -1,1 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mike's D&D Place</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0d0f12;
+    --surface:   #13161b;
+    --surface2:  #1b1f27;
+    --border:    #252a35;
+    --amber:     #e8a225;
+    --amber-dim: #a06b10;
+    --amber-glow:#e8a22533;
+    --red:       #c94040;
+    --green:     #3aad6e;
+    --text:      #d8dde8;
+    --muted:     #5a6278;
+    --white:     #f0f2f7;
+    --radius:    6px;
+    --transition: 0.18s ease;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 999; opacity: 0.4;
+  }
 
+  /* HEADER */
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 32px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .logo { font-family: 'Cinzel', serif; font-size: 22px; font-weight: 700; color: var(--amber); letter-spacing: 0.12em; text-shadow: 0 0 24px var(--amber-glow); }
+  .logo span { color: var(--muted); font-weight: 400; font-size: 13px; }
+  .header-tag { font-size: 10px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; border: 1px solid var(--border); padding: 4px 10px; border-radius: 2px; }
+
+  /* LAYOUT */
+  main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 32px 24px;
+  }
+
+  @media (max-width: 860px) {
+    main { grid-template-columns: 1fr !important; padding: 12px; }
+    main .panel { grid-column: 1 !important; grid-row: auto !important; }
+    header { padding: 14px 16px; }
+    .logo { font-size: 16px; }
+    .logo span { display: none; }
+  }
+
+  /* PANEL */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin: 8px;
+    overflow: hidden;
+    transition: box-shadow var(--transition);
+    animation: fadeUp 0.3s ease both;
+  }
+  .panel:nth-child(2) { animation-delay: 0.06s; }
+  .panel:hover { box-shadow: 0 0 0 1px var(--border), 0 8px 32px rgba(0,0,0,0.4); }
+  .panel-header { display: flex; align-items: center; gap: 10px; padding: 14px 20px; border-bottom: 1px solid var(--border); background: var(--surface2); }
+  .panel-icon { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 15px; background: var(--amber-glow); border: 1px solid var(--amber-dim); border-radius: 4px; color: var(--amber); }
+  .panel-title { font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 0.1em; color: var(--white); font-weight: 600; }
+  .panel-body { padding: 20px; }
+
+  .label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 9px 18px;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface2); color: var(--text);
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px;
+    cursor: pointer; transition: all var(--transition); white-space: nowrap;
+  }
+  .btn:hover { border-color: var(--amber-dim); color: var(--amber); background: var(--amber-glow); }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary { background: var(--amber); color: #0d0f12; border-color: var(--amber); font-weight: 500; }
+  .btn-primary:hover { background: #f0b030; color: #0d0f12; border-color: #f0b030; }
+
+  .btn-trash {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; padding: 0;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface2); color: var(--muted);
+    font-size: 15px; cursor: pointer; transition: all var(--transition); flex-shrink: 0;
+  }
+  .btn-trash:hover { border-color: var(--red); color: var(--red); background: #c9404015; }
+  .btn-trash:active { transform: scale(0.94); }
+
+  /* INPUTS */
+  input[type="number"], input[type="text"], select {
+    background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+    color: var(--text); font-family: 'IBM Plex Mono', monospace; font-size: 13px;
+    padding: 8px 12px; width: 100%; transition: border-color var(--transition); -moz-appearance: textfield;
+  }
+  input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; }
+  input:focus, select:focus { outline: none; border-color: var(--amber-dim); box-shadow: 0 0 0 2px var(--amber-glow); }
+
+  /* DICE GRID
+     Row 1: d4 d6 d8 d10  (4 cols)
+     Row 2: d12 d100 dX [empty]  -- dX occupies col 3
+     Row 3: d20 full width (separate .d20-row div below the grid)
+  */
+  .dice-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 0;
+  }
+  .dx-cell { grid-column: 3; }
+
+  .d20-row { margin-top: 8px; margin-bottom: 16px; }
+
+  .die-btn {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 12px 6px; border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface2); color: var(--muted);
+    font-family: 'Cinzel', serif; font-size: 11px;
+    cursor: pointer; transition: all var(--transition); position: relative; gap: 4px;
+  }
+  .die-btn .die-face { font-size: 22px; line-height: 1; transition: transform var(--transition); }
+  .die-btn:hover { border-color: var(--amber); color: var(--amber); background: var(--amber-glow); box-shadow: 0 0 12px var(--amber-glow); }
+  .die-btn:hover .die-face { transform: rotate(-8deg) scale(1.15); }
+  .die-btn:active { transform: scale(0.94); }
+
+  .die-count-badge { position: absolute; top: 4px; right: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--amber); font-weight: 500; }
+
+  /* dX CELL — sides input only, no qty */
+  .dx-cell {
+    display: flex; flex-direction: column;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    overflow: hidden; background: var(--surface2); transition: border-color var(--transition);
+  }
+  .dx-cell:hover { border-color: var(--amber-dim); }
+  .dx-top {
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 3px; padding: 8px 6px 4px; cursor: pointer;
+    color: var(--muted); font-family: 'Cinzel', serif; font-size: 11px;
+    transition: color var(--transition); background: none; border: none; width: 100%;
+  }
+  .dx-top .die-face { font-size: 20px; line-height: 1; transition: transform var(--transition); }
+  .dx-top:hover { color: var(--amber); }
+  .dx-top:hover .die-face { transform: rotate(-8deg) scale(1.1); }
+  .dx-top:active { transform: scale(0.94); }
+  .dx-input-wrap { border-top: 1px solid var(--border); padding: 3px 5px; background: var(--bg); }
+  .dx-input-wrap input {
+    border: none; border-radius: 0; background: transparent;
+    font-size: 10px; padding: 2px 0; color: var(--text);
+    text-align: center; font-family: 'IBM Plex Mono', monospace; width: 100%;
+  }
+  .dx-input-wrap input::placeholder { font-size: 9px; color: var(--muted); }
+  .dx-input-wrap input:focus { outline: none; box-shadow: none; }
+
+  /* D20 ROW — full width with adv/dis on the right */
+  .d20-main {
+    display: flex; align-items: stretch;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    overflow: hidden; background: var(--surface2); transition: border-color var(--transition);
+    height: 58px;
+  }
+  .d20-main:hover { border-color: var(--amber-dim); }
+
+  .d20-die-btn {
+    flex: 1; display: flex; flex-direction: row; align-items: center; justify-content: center;
+    gap: 8px; padding: 0 16px; cursor: pointer;
+    background: none; border: none; color: var(--muted);
+    font-family: 'Cinzel', serif; font-size: 14px;
+    transition: all var(--transition); position: relative;
+  }
+  .d20-die-btn .die-face { font-size: 26px; line-height: 1; transition: transform var(--transition); }
+  .d20-die-btn:hover { color: var(--amber); }
+  .d20-die-btn:hover .die-face { transform: rotate(-8deg) scale(1.15); }
+  .d20-die-btn:active { transform: scale(0.97); }
+  #badge-20 { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--amber); font-weight: 500; }
+
+  .adv-mini-col { display: flex; flex-direction: row; flex-shrink: 0; }
+  .adv-mini-btn {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    width: 56px; height: 100%;
+    background: none; border: none; border-left: 1px solid var(--border);
+    cursor: pointer; font-size: 14px; color: var(--muted);
+    transition: all var(--transition); gap: 2px; padding: 6px 4px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .adv-mini-btn .adv-label { font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; line-height: 1; }
+  #advBtn:hover { background: #3aad6e18; color: var(--green); }
+  #disBtn:hover { background: #c9404018; color: var(--red); }
+  .adv-mini-btn.active-adv { background: #3aad6e22; color: var(--green); border-left-color: #3aad6e44; }
+  .adv-mini-btn.active-dis { background: #c9404022; color: var(--red);   border-left-color: #c9404044; }
+
+  /* MODIFIER */
+  .mod-row { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; }
+  .mod-row input { width: 90px; flex-shrink: 0; }
+  .mod-row label { color: var(--muted); font-size: 11px; }
+
+  /* QUEUE TEXT INPUT */
+  .queue-input-row { display: flex; gap: 6px; margin-bottom: 8px; }
+  .queue-text-input {
+    flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+    color: var(--text); font-family: 'IBM Plex Mono', monospace; font-size: 12px;
+    padding: 7px 12px; transition: border-color var(--transition);
+  }
+  .queue-text-input::placeholder { color: var(--muted); font-size: 11px; }
+  .queue-text-input:focus { outline: none; border-color: var(--amber-dim); box-shadow: 0 0 0 2px var(--amber-glow); }
+  .queue-text-input.input-error { border-color: var(--red); box-shadow: 0 0 0 2px #c9404022; animation: shake 0.3s ease; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+
+  /* QUEUE DISPLAY */
+  .roll-queue {
+    background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 8px 12px; min-height: 42px; margin-bottom: 12px;
+    display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+  }
+  .queue-empty { color: var(--muted); font-size: 11px; font-style: italic; }
+  .queue-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 3px;
+    padding: 3px 8px; font-size: 12px; color: var(--amber);
+    cursor: pointer; transition: all var(--transition);
+  }
+  .queue-chip:hover { border-color: var(--red); color: var(--red); }
+  .queue-chip .rm { font-size: 10px; color: var(--muted); }
+  .queue-chip.mod-chip { color: var(--green); }
+  .queue-chip.mod-chip.neg { color: var(--red); }
+
+  /* RESULTS */
+  .result-box { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-top: 12px; }
+  .result-total { font-family: 'Cinzel', serif; font-size: 42px; font-weight: 700; color: var(--amber); text-align: center; line-height: 1; text-shadow: 0 0 30px var(--amber-glow); transition: all 0.3s ease; }
+  .result-total.crit   { color: #f7d060; text-shadow: 0 0 40px #f7d06066; animation: critFlash 0.5s ease; }
+  .result-total.fumble { color: var(--red); text-shadow: 0 0 30px #c9404044; animation: fumbleShake 0.4s ease; }
+  @keyframes critFlash  { 0%{transform:scale(1)} 40%{transform:scale(1.15)} 100%{transform:scale(1)} }
+  @keyframes fumbleShake{ 0%,100%{transform:translateX(0)} 20%{transform:translateX(-4px)} 60%{transform:translateX(4px)} }
+  .result-breakdown { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; justify-content: center; }
+  .die-result { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border: 1px solid var(--border); border-radius: 4px; font-size: 13px; font-weight: 500; background: var(--surface2); transition: all var(--transition); }
+  .die-result.max-val { border-color: var(--amber); color: var(--amber); background: var(--amber-glow); }
+  .die-result.min-val { border-color: var(--red); color: var(--red); background: #c9404011; }
+  .die-result.dropped { opacity: 0.3; text-decoration: line-through; }
+  .result-label { text-align: center; color: var(--muted); font-size: 11px; margin-top: 8px; }
+
+  /* HISTORY */
+  .result-history { margin-top: 16px; border-top: 1px solid var(--border); padding-top: 12px; max-height: 130px; overflow-y: auto; }
+  .history-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .history-clear-btn {
+    background: none; border: none; color: var(--muted); font-size: 9px;
+    font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.1em;
+    cursor: pointer; padding: 2px 4px; border-radius: 2px;
+    opacity: 0.45; transition: opacity var(--transition), color var(--transition); text-transform: uppercase;
+  }
+  .history-clear-btn:hover { opacity: 1; color: var(--red); }
+  .history-entry { display: flex; justify-content: space-between; gap: 8px; padding: 3px 0; font-size: 11px; color: var(--muted); border-bottom: 1px solid #1b1f2740; }
+  .history-entry .h-expr { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .history-entry .h-total { color: var(--text); font-weight: 500; flex-shrink: 0; }
+
+  /* STAT ROLLER */
+  .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 16px 0; }
+  .stat-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; text-align: center; transition: border-color var(--transition); cursor: default; }
+  .stat-card:hover { border-color: var(--amber-dim); }
+  .stat-card .stat-name { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; }
+  .stat-card .stat-value { font-family: 'Cinzel', serif; font-size: 28px; font-weight: 700; color: var(--white); line-height: 1; margin-bottom: 4px; transition: color 0.2s; }
+  .stat-card .stat-mod { font-size: 12px; color: var(--muted); }
+  .stat-card .stat-rolls { display: flex; gap: 3px; justify-content: center; margin-top: 6px; flex-wrap: wrap; }
+  .stat-card .roll-pip { font-size: 10px; padding: 1px 4px; border-radius: 2px; border: 1px solid var(--border); color: var(--muted); }
+  .stat-card .roll-pip.kept { color: var(--text); border-color: var(--amber-dim); }
+  .stat-card .roll-pip.dropped-pip { text-decoration: line-through; opacity: 0.3; }
+  .stat-card.high  .stat-value { color: var(--amber); }
+  .stat-card.vhigh .stat-value { color: #f7d060; text-shadow: 0 0 12px var(--amber-glow); }
+  .stat-card.low   .stat-value { color: var(--red); }
+  .reroll-single { background: none; border: none; color: var(--muted); font-size: 10px; cursor: pointer; padding: 2px 4px; border-radius: 2px; transition: color var(--transition); font-family: 'IBM Plex Mono', monospace; }
+  .reroll-single:hover { color: var(--amber); }
+  .stat-total-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0 0; border-top: 1px solid var(--border); font-size: 12px; color: var(--muted); }
+  .stat-total-row strong { color: var(--white); font-size: 15px; }
+  .point-buy-note { font-size: 10px; color: var(--muted); text-align: center; margin-top: 8px; font-style: italic; }
+
+  .action-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; align-items: center; }
+  ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes rollSpin { 0%{transform:rotate(0deg) scale(0.8);opacity:0} 60%{transform:rotate(8deg) scale(1.05);opacity:1} 100%{transform:rotate(0deg) scale(1);opacity:1} }
+  .rolling { animation: rollSpin 0.35s ease; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Mike's D&amp;D place <span>// May RNGesus be on your side</span></div>
+  <div class="header-tag">2026</div>
+</header>
+
+<main>
+
+  <!-- PANEL 1: DICE ROLLER -->
+  <div class="panel" style="grid-column:1; grid-row:1;">
+    <div class="panel-header">
+      <div class="panel-icon">⚄</div>
+      <div class="panel-title">Dice Roller</div>
+    </div>
+    <div class="panel-body">
+
+      <div class="label">Add to Roll</div>
+
+      <!-- Row 1: d4 d6 d8 d10 | Row 2: d12 d100 dX [empty] -->
+      <div class="dice-grid" id="diceGrid">
+        <button class="die-btn" onclick="addToQueue(4)"   title="d4"><span class="die-face">◆</span>d4<span class="die-count-badge" id="badge-4"></span></button>
+        <button class="die-btn" onclick="addToQueue(6)"   title="d6"><span class="die-face">⬡</span>d6<span class="die-count-badge" id="badge-6"></span></button>
+        <button class="die-btn" onclick="addToQueue(8)"   title="d8"><span class="die-face">◈</span>d8<span class="die-count-badge" id="badge-8"></span></button>
+        <button class="die-btn" onclick="addToQueue(10)"  title="d10"><span class="die-face">⬟</span>d10<span class="die-count-badge" id="badge-10"></span></button>
+        <button class="die-btn" onclick="addToQueue(12)"  title="d12"><span class="die-face">⬠</span>d12<span class="die-count-badge" id="badge-12"></span></button>
+        <button class="die-btn" onclick="addToQueue(100)" title="d100"><span class="die-face">◉</span>d100<span class="die-count-badge" id="badge-100"></span></button>
+        <!-- dX: col 3 of row 2 -->
+        <div class="dx-cell">
+          <button class="dx-top" onclick="addCustomDieFromInput()" title="Click to add custom die">
+            <span class="die-face">✦</span>dX
+          </button>
+          <div class="dx-input-wrap">
+            <input type="number" id="customSides" min="2" max="9999" placeholder="sides" title="Number of sides">
+          </div>
+        </div>
+      </div>
+
+      <!-- d20 row: full-width, separated, most-used die -->
+      <div class="d20-row">
+        <div class="d20-main">
+          <button class="d20-die-btn" onclick="addToQueue(20)" title="Add d20">
+            <span class="die-face">⬡</span>
+            <span>d20</span>
+            <span id="badge-20"></span>
+          </button>
+          <div class="adv-mini-col">
+            <button class="adv-mini-btn" id="advBtn" onclick="toggleAdv('adv')" title="Advantage — roll 2d20, keep highest">
+              ▲<span class="adv-label">adv</span>
+            </button>
+            <button class="adv-mini-btn" id="disBtn" onclick="toggleAdv('dis')" title="Disadvantage — roll 2d20, keep lowest">
+              ▼<span class="adv-label">dis</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="label">Modifier</div>
+      <div class="mod-row">
+        <input type="number" id="rollModifier" value="0" placeholder="+/-">
+        <label>added to total</label>
+      </div>
+
+      <div class="label">Roll Queue</div>
+      <div class="queue-input-row">
+        <input type="text" class="queue-text-input" id="queueTextInput"
+          placeholder="e.g. 3d6 +4  4d12 -2  d20"
+          title="Type dice notation and press Enter or click Add">
+        <button class="btn" onclick="parseQueueInput()" style="flex-shrink:0;">Add</button>
+      </div>
+
+      <div class="roll-queue" id="rollQueue">
+        <span class="queue-empty">Click dice above or type notation…</span>
+      </div>
+
+      <div class="action-row">
+        <button class="btn btn-primary" onclick="rollAll()">⚄ Roll</button>
+        <button class="btn-trash" onclick="clearQueue()" title="Clear queue">🗑</button>
+      </div>
+
+      <div class="result-box" id="rollResult" style="display:none;">
+        <div class="result-total" id="resultTotal">—</div>
+        <div class="result-label" id="resultLabel"></div>
+        <div class="result-breakdown" id="resultBreakdown"></div>
+      </div>
+
+      <div class="result-history" id="rollHistory" style="display:none;"></div>
+    </div>
+  </div>
+
+  <!-- PANEL 2: STAT ROLLER -->
+  <div class="panel" style="grid-column:2; grid-row:1;">
+    <div class="panel-header">
+      <div class="panel-icon">⚔</div>
+      <div class="panel-title">Stat Generator</div>
+    </div>
+    <div class="panel-body">
+      <p style="color:var(--muted);font-size:11px;margin-bottom:16px;">
+        Rolls 4d6 for each of the 6 ability scores, drops the lowest die. Click individual stats to reroll them.
+      </p>
+      <div class="stat-grid" id="statGrid">
+        <div class="stat-card" id="stat-STR"><div class="stat-name">STR</div><div class="stat-value">—</div><div class="stat-mod">—</div><div class="stat-rolls"></div><button class="reroll-single" onclick="rerollSingleStat('STR')">↺ reroll</button></div>
+        <div class="stat-card" id="stat-DEX"><div class="stat-name">DEX</div><div class="stat-value">—</div><div class="stat-mod">—</div><div class="stat-rolls"></div><button class="reroll-single" onclick="rerollSingleStat('DEX')">↺ reroll</button></div>
+        <div class="stat-card" id="stat-CON"><div class="stat-name">CON</div><div class="stat-value">—</div><div class="stat-mod">—</div><div class="stat-rolls"></div><button class="reroll-single" onclick="rerollSingleStat('CON')">↺ reroll</button></div>
+        <div class="stat-card" id="stat-INT"><div class="stat-name">INT</div><div class="stat-value">—</div><div class="stat-mod">—</div><div class="stat-rolls"></div><button class="reroll-single" onclick="rerollSingleStat('INT')">↺ reroll</button></div>
+        <div class="stat-card" id="stat-WIS"><div class="stat-name">WIS</div><div class="stat-value">—</div><div class="stat-mod">—</div><div class="stat-rolls"></div><button class="reroll-single" onclick="rerollSingleStat('WIS')">↺ reroll</button></div>
+        <div class="stat-card" id="stat-CHA"><div class="stat-name">CHA</div><div class="stat-value">—</div><div class="stat-mod">—</div><div class="stat-rolls"></div><button class="reroll-single" onclick="rerollSingleStat('CHA')">↺ reroll</button></div>
+      </div>
+      <div class="stat-total-row" id="statTotalRow" style="display:none;">
+        <span>Total Score Sum</span>
+        <strong id="statSum">—</strong>
+        <span id="statRating" style="font-size:11px;"></span>
+      </div>
+      <div class="point-buy-note" id="pointBuyNote" style="display:none;"></div>
+      <div class="action-row" style="margin-top:16px;">
+        <button class="btn btn-primary" onclick="rollAllStats()">⚄ Roll All Stats</button>
+        <button class="btn" onclick="clearStats()">Clear</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// STATE
+let rollQueue = {};   // { sides: count }
+let queueMod  = 0;   // flat modifier accumulated from text input
+let advMode   = null; // 'adv' | 'dis' | null
+let history   = [];
+
+const STATS = ['STR','DEX','CON','INT','WIS','CHA'];
+
+// DICE UTIL
+function d(sides) { return Math.floor(Math.random() * sides) + 1; }
+
+// QUEUE MANAGEMENT
+function addToQueue(sides, qty = 1) {
+  rollQueue[sides] = (rollQueue[sides] || 0) + qty;
+  renderQueue();
+}
+
+function addCustomDieFromInput() {
+  const sides = parseInt(document.getElementById('customSides').value);
+  if (!sides || sides < 2) { flashError(document.getElementById('customSides')); return; }
+  addToQueue(sides, 1);
+}
+
+function removeFromQueue(sides) {
+  delete rollQueue[sides];
+  renderQueue();
+}
+
+function removeModFromQueue() {
+  queueMod = 0;
+  renderQueue();
+}
+
+function clearQueue() {
+  rollQueue = {};
+  queueMod  = 0;
+  advMode   = null;
+  document.getElementById('advBtn').className = 'adv-mini-btn';
+  document.getElementById('disBtn').className = 'adv-mini-btn';
+  renderQueue();
+  document.getElementById('rollResult').style.display = 'none';
+  [4,6,8,10,12,20,100].forEach(s => {
+    const b = document.getElementById('badge-'+s);
+    if (b) b.textContent = '';
+  });
+}
+
+// PARSE TEXT NOTATION — e.g. "3d6 +4  4d12 -2  d20"
+function parseQueueInput() {
+  const raw = document.getElementById('queueTextInput').value.trim();
+  if (!raw) return;
+
+  let foundAny = false;
+  let parsedMod = 0;
+
+  // Match NdM or dM
+  const diceRe = /(\d*)d(\d+)/gi;
+  let m;
+  while ((m = diceRe.exec(raw)) !== null) {
+    const qty   = m[1] ? parseInt(m[1]) : 1;
+    const sides = parseInt(m[2]);
+    if (qty >= 1 && sides >= 2) {
+      rollQueue[sides] = (rollQueue[sides] || 0) + qty;
+      foundAny = true;
+    }
+  }
+
+  // Match standalone modifiers (+4, -2) — not followed by 'd'
+  const modRe = /([+-]\s*\d+)(?!\s*d)/g;
+  while ((m = modRe.exec(raw)) !== null) {
+    parsedMod += parseInt(m[1].replace(/\s/g, ''));
+    foundAny = true;
+  }
+
+  if (!foundAny) { flashError(document.getElementById('queueTextInput')); return; }
+
+  queueMod += parsedMod;
+  document.getElementById('queueTextInput').value = '';
+  renderQueue();
+}
+
+function flashError(el) {
+  el.classList.add('input-error');
+  setTimeout(() => el.classList.remove('input-error'), 600);
+}
+
+// RENDER QUEUE
+function renderQueue() {
+  const el   = document.getElementById('rollQueue');
+  const keys = Object.keys(rollQueue).map(Number).filter(s => rollQueue[s] > 0);
+
+  // Update badges on buttons
+  [4,6,8,10,12,20,100].forEach(s => {
+    const b = document.getElementById('badge-'+s);
+    if (b) b.textContent = rollQueue[s] ? '×'+rollQueue[s] : '';
+  });
+
+  if (keys.length === 0 && queueMod === 0) {
+    el.innerHTML = '<span class="queue-empty">Click dice above or type notation…</span>';
+    return;
+  }
+
+  let html = keys.map(s =>
+    `<span class="queue-chip" onclick="removeFromQueue(${s})" title="Click to remove">${rollQueue[s]}d${s} <span class="rm">✕</span></span>`
+  ).join('');
+
+  if (queueMod !== 0) {
+    const sign = queueMod >= 0 ? '+' : '';
+    html += `<span class="queue-chip mod-chip ${queueMod < 0 ? 'neg' : ''}" onclick="removeModFromQueue()" title="Click to remove">${sign}${queueMod} <span class="rm">✕</span></span>`;
+  }
+
+  el.innerHTML = html;
+}
+
+// ADVANTAGE
+function toggleAdv(mode) {
+  advMode = advMode === mode ? null : mode;
+  document.getElementById('advBtn').className = 'adv-mini-btn' + (advMode === 'adv' ? ' active-adv' : '');
+  document.getElementById('disBtn').className = 'adv-mini-btn' + (advMode === 'dis' ? ' active-dis' : '');
+}
+function clearAdv() {
+  advMode = null;
+  document.getElementById('advBtn').className = 'adv-mini-btn';
+  document.getElementById('disBtn').className = 'adv-mini-btn';
+}
+
+// ROLL ENGINE
+function rollAll() {
+  const keys = Object.keys(rollQueue).map(Number).filter(s => rollQueue[s] > 0);
+  if (keys.length === 0 && queueMod === 0) {
+    addToQueue(20);
+    renderQueue();
+  }
+
+  const inputMod = parseInt(document.getElementById('rollModifier').value) || 0;
+  const totalMod = inputMod + queueMod;
+
+  let allResults = [];
+  let labelParts = [];
+
+  for (const sides of Object.keys(rollQueue).map(Number)) {
+    const qty = rollQueue[sides];
+    let rolls = [];
+    if (sides === 20 && advMode && qty === 1) {
+      const r1 = d(20), r2 = d(20);
+      if (advMode === 'adv') {
+        const kept = Math.max(r1,r2), drop = Math.min(r1,r2);
+        rolls = [{val:kept,sides,kept:true,advDrop:false},{val:drop,sides,kept:false,advDrop:true}];
+      } else {
+        const kept = Math.min(r1,r2), drop = Math.max(r1,r2);
+        rolls = [{val:kept,sides,kept:true,advDrop:false},{val:drop,sides,kept:false,advDrop:true}];
+      }
+    } else {
+      for (let i = 0; i < qty; i++) rolls.push({val:d(sides),sides,kept:true,advDrop:false});
+    }
+    allResults.push(...rolls);
+    labelParts.push(`${qty}d${sides}`);
+  }
+
+  const keptRolls = allResults.filter(r => r.kept);
+  const sum = keptRolls.reduce((a,r) => a + r.val, 0) + totalMod;
+
+  const freshKeys = Object.keys(rollQueue).map(Number).filter(s => rollQueue[s] > 0);
+  const is20only  = freshKeys.length === 1 && freshKeys[0] === 20;
+  const keptVals  = keptRolls.filter(r => r.sides === 20).map(r => r.val);
+  const isCrit    = is20only && keptVals.includes(20);
+  const isFumble  = is20only && keptVals.length > 0 && keptVals.every(v => v === 1);
+
+  const resultEl = document.getElementById('rollResult');
+  resultEl.style.display = 'block';
+
+  const totalEl = document.getElementById('resultTotal');
+  totalEl.textContent = sum;
+  totalEl.className = 'result-total rolling ' + (isCrit ? 'crit' : isFumble ? 'fumble' : '');
+
+  let labelText = labelParts.join(' + ');
+  if (totalMod !== 0) labelText += ` ${totalMod >= 0 ? '+' : ''}${totalMod}`;
+  if (advMode === 'adv') labelText += ' (advantage)';
+  if (advMode === 'dis') labelText += ' (disadvantage)';
+  if (isCrit)   labelText += ' — CRITICAL HIT!';
+  if (isFumble) labelText += ' — CRITICAL FAIL!';
+  document.getElementById('resultLabel').textContent = labelText;
+
+  const bdEl = document.getElementById('resultBreakdown');
+  bdEl.innerHTML = '';
+  allResults.forEach(r => {
+    const el = document.createElement('div');
+    el.className = 'die-result'
+      + (r.advDrop ? ' dropped' : '')
+      + (r.val === r.sides && !r.advDrop ? ' max-val' : '')
+      + (r.val === 1 && !r.advDrop ? ' min-val' : '');
+    el.textContent = r.val;
+    el.title = `d${r.sides}`;
+    bdEl.appendChild(el);
+  });
+  if (totalMod !== 0) {
+    const modEl = document.createElement('div');
+    modEl.className = 'die-result';
+    modEl.style.color = totalMod > 0 ? 'var(--green)' : 'var(--red)';
+    modEl.style.borderColor = totalMod > 0 ? 'var(--green)' : 'var(--red)';
+    modEl.style.minWidth = '44px';
+    modEl.textContent = (totalMod > 0 ? '+' : '') + totalMod;
+    bdEl.appendChild(modEl);
+  }
+
+  const ts = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  history.unshift({ label: labelText, total: sum, ts });
+  if (history.length > 15) history.pop();
+  renderHistory();
+}
+
+// HISTORY
+function clearHistory() {
+  history = [];
+  document.getElementById('rollHistory').style.display = 'none';
+}
+
+function renderHistory() {
+  const el = document.getElementById('rollHistory');
+  if (history.length === 0) { el.style.display = 'none'; return; }
+  el.style.display = 'block';
+  el.innerHTML =
+    `<div class="history-header">
+       <div class="label" style="margin-bottom:0;">History</div>
+       <button class="history-clear-btn" onclick="clearHistory()">clear</button>
+     </div>` +
+    history.map(h =>
+      `<div class="history-entry">
+        <span style="flex-shrink:0;">${h.ts}</span>
+        <span class="h-expr">${h.label}</span>
+        <span class="h-total">${h.total}</span>
+      </div>`
+    ).join('');
+}
+
+// STAT ROLLER
+let statValues = {};
+
+function rollOneStat() {
+  const rolls = [d(6), d(6), d(6), d(6)];
+  let minVal = Math.min(...rolls);
+  let droppedIndex = -1;
+  for (let i = rolls.length - 1; i >= 0; i--) {
+    if (rolls[i] === minVal) { droppedIndex = i; break; }
+  }
+  const total = rolls.reduce((sum, v, i) => i === droppedIndex ? sum : sum + v, 0);
+  return { rolls, droppedIndex, total };
+}
+
+function abilityMod(score) {
+  const mod = Math.floor((score - 10) / 2);
+  return (mod >= 0 ? '+' : '') + mod;
+}
+
+function renderStatCard(name, data) {
+  const card = document.getElementById('stat-' + name);
+  const val  = data.total;
+  let cls = 'stat-card';
+  if (val >= 17) cls += ' vhigh';
+  else if (val >= 14) cls += ' high';
+  else if (val <= 7) cls += ' low';
+  card.className = cls;
+  card.querySelector('.stat-value').textContent = val;
+  card.querySelector('.stat-mod').textContent   = 'mod ' + abilityMod(val);
+  card.querySelector('.stat-rolls').innerHTML = data.rolls.map((r, i) => {
+    const isDropped = i === data.droppedIndex;
+    return `<span class="roll-pip ${isDropped ? 'dropped-pip' : 'kept'}">${r}</span>`;
+  }).join('');
+}
+
+function rollAllStats() {
+  STATS.forEach(name => {
+    statValues[name] = rollOneStat();
+    renderStatCard(name, statValues[name]);
+  });
+  updateStatSummary();
+}
+
+function rerollSingleStat(name) {
+  statValues[name] = rollOneStat();
+  const card = document.getElementById('stat-' + name);
+  card.style.animation = 'none';
+  requestAnimationFrame(() => { card.style.animation = 'critFlash 0.3s ease'; });
+  renderStatCard(name, statValues[name]);
+  updateStatSummary();
+}
+
+function updateStatSummary() {
+  const names = STATS.filter(n => statValues[n]);
+  if (names.length === 0) return;
+  const sum = names.reduce((a,n) => a + statValues[n].total, 0);
+  document.getElementById('statSum').textContent = sum;
+  document.getElementById('statTotalRow').style.display = 'flex';
+  const rating = sum >= 78 ? '🔥 Legendary' : sum >= 72 ? '⭐ Excellent' : sum >= 66 ? '✓ Good' : sum >= 60 ? '~ Average' : '💀 Rough';
+  document.getElementById('statRating').textContent = rating;
+  document.getElementById('pointBuyNote').style.display = 'block';
+  document.getElementById('pointBuyNote').textContent = `Sum of ${sum} — standard array is 72.`;
+}
+
+function clearStats() {
+  statValues = {};
+  STATS.forEach(name => {
+    const card = document.getElementById('stat-' + name);
+    card.className = 'stat-card';
+    card.querySelector('.stat-value').textContent = '—';
+    card.querySelector('.stat-mod').textContent   = '—';
+    card.querySelector('.stat-rolls').innerHTML   = '';
+  });
+  document.getElementById('statTotalRow').style.display = 'none';
+  document.getElementById('pointBuyNote').style.display = 'none';
+}
+
+// KEYBOARD SHORTCUTS
+document.addEventListener('keydown', e => {
+  const active = document.activeElement;
+  if (e.key === 'Enter' && active.id === 'queueTextInput') { parseQueueInput(); return; }
+  if (e.key === 'Enter' && active.id === 'customSides')    { addCustomDieFromInput(); return; }
+  if (e.key === 'Enter' && active.tagName !== 'INPUT' && active.tagName !== 'TEXTAREA') { rollAll(); }
+});
+</script>
+</body>
+</html>
