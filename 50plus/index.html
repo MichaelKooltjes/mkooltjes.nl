@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>50+ Mobiel · Datum Tools</title>
+  <title>50+ Mobiel · Tools</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -20,510 +20,297 @@
       --muted: #6B7280;
       --muted2: #9CA3AF;
       --success: #059669;
-      --info: #2563EB;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
       --shadow: 0 4px 16px rgba(0,0,0,.07), 0 1px 4px rgba(0,0,0,.04);
-      --shadow-lg: 0 12px 40px rgba(0,0,0,.1), 0 4px 12px rgba(0,0,0,.05);
       --radius: .75rem;
       --radius-sm: .5rem;
       --grad: linear-gradient(135deg, var(--orange) 0%, var(--purple) 100%);
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       font-family: 'DM Sans', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
+      background: var(--bg); color: var(--text);
+      min-height: 100vh; -webkit-font-smoothing: antialiased;
     }
 
-    /* ── TOP INFO BAR ── */
+    /* INFO BAR */
     .infobar {
-      background: var(--text);
-      color: #fff;
+      background: var(--text); color: #fff;
       padding: .6rem 1.5rem;
-      display: flex;
-      gap: 1.5rem;
-      align-items: center;
-      flex-wrap: wrap;
-      justify-content: center;
-      font-size: .82rem;
-      letter-spacing: .01em;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; justify-content: center;
+      font-size: .82rem; letter-spacing: .01em;
+      position: sticky; top: 0; z-index: 100;
     }
-
-    .infobar-item {
-      display: flex;
-      align-items: center;
-      gap: .55rem;
-    }
-
-    .infobar-item .dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
+    .infobar-item { display: flex; align-items: center; gap: .55rem; }
+    .infobar-item .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
     .dot-orange { background: var(--orange); }
     .dot-purple { background: var(--purple-light); }
+    .infobar-label { color: rgba(255,255,255,.5); }
+    .infobar-val { font-weight: 600; font-family: 'DM Mono', monospace; font-size: .8rem; }
+    .infobar-divider { width: 1px; height: 16px; background: rgba(255,255,255,.15); flex-shrink: 0; }
+    .infobar-live { display: flex; align-items: center; gap: .4rem; font-size: .75rem; color: rgba(255,255,255,.35); margin-left: auto; }
+    .infobar-live .pulse { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; animation: pulse-anim 2s ease infinite; }
+    @keyframes pulse-anim { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)} }
 
-    .infobar-label {
-      color: rgba(255,255,255,.5);
-      font-weight: 400;
-    }
+    /* LAYOUT */
+    .page { max-width: 960px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
 
-    .infobar-val {
-      font-weight: 600;
-      font-family: 'DM Mono', monospace;
-      font-size: .8rem;
-      color: #fff;
-    }
-
-    .infobar-divider {
-      width: 1px;
-      height: 16px;
-      background: rgba(255,255,255,.12);
-      flex-shrink: 0;
-    }
-
-    .infobar-live {
-      display: flex;
-      align-items: center;
-      gap: .4rem;
-      font-size: .75rem;
-      color: rgba(255,255,255,.35);
-      margin-left: auto;
-    }
-    .infobar-live .pulse {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: #22c55e;
-      animation: pulse-anim 2s ease infinite;
-    }
-    @keyframes pulse-anim {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: .5; transform: scale(.7); }
-    }
-
-    /* ── MAIN LAYOUT ── */
-    .page {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 2rem 1.25rem 3rem;
-    }
-
-    /* ── HEADER ── */
-    .header {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-
+    /* HEADER */
+    .header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
     .logo {
-      width: 48px; height: 48px;
-      border-radius: .75rem;
-      background: var(--grad);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 700;
-      font-size: 1rem;
-      box-shadow: 0 4px 14px rgba(124,58,237,.3);
-      flex-shrink: 0;
+      width: 48px; height: 48px; border-radius: .75rem;
+      background: var(--grad); display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 700; font-size: 1rem;
+      box-shadow: 0 4px 14px rgba(124,58,237,.3); flex-shrink: 0;
     }
+    .header-text h1 { font-size: 1.3rem; font-weight: 700; letter-spacing: -.02em; }
+    .header-text p { color: var(--muted); font-size: .88rem; margin-top: .15rem; }
 
-    .header-text h1 {
-      font-size: 1.3rem;
-      font-weight: 700;
-      letter-spacing: -.02em;
-      line-height: 1.2;
+    /* TABS */
+    .tabs {
+      display: flex; background: var(--surface); border-radius: var(--radius);
+      box-shadow: var(--shadow); padding: .35rem; margin-bottom: 1.25rem;
     }
-
-    .header-text p {
-      color: var(--muted);
-      font-size: .88rem;
-      margin-top: .15rem;
+    .tab-btn {
+      flex: 1; padding: .6rem .75rem; border: none; background: transparent;
+      font-family: inherit; font-size: .9rem; font-weight: 500; color: var(--muted);
+      border-radius: .5rem; cursor: pointer; transition: all .15s;
+      display: flex; align-items: center; justify-content: center; gap: .4rem;
     }
+    .tab-btn.active { background: var(--grad); color: white; font-weight: 600; box-shadow: 0 2px 8px rgba(124,58,237,.25); }
+    .tab-btn:not(.active):hover { background: var(--surface2); color: var(--text); }
 
-    /* ── CARD ── */
+    /* TAB PANELS */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* CARD */
     .card {
-      background: var(--surface);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow: hidden;
+      background: var(--surface); border-radius: var(--radius);
+      box-shadow: var(--shadow); overflow: hidden; margin-bottom: 1rem;
     }
-
     .card-header {
-      padding: 1.1rem 1.4rem .9rem;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: .65rem;
+      padding: 1rem 1.4rem .85rem; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: .65rem;
     }
-
-    .card-header h2 {
-      font-size: 1rem;
-      font-weight: 600;
-      letter-spacing: -.01em;
-    }
-
+    .card-header h2 { font-size: 1rem; font-weight: 600; letter-spacing: -.01em; }
     .card-header .icon {
-      width: 30px; height: 30px;
-      border-radius: .45rem;
-      background: var(--surface2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
+      width: 30px; height: 30px; border-radius: .45rem; background: var(--surface2);
+      display: flex; align-items: center; justify-content: center; font-size: 1rem;
     }
+    .card-body { padding: 1.4rem; }
 
-    .card-body {
-      padding: 1.4rem;
+    /* SECTION TITLE */
+    .section-title {
+      font-size: .78rem; font-weight: 600; text-transform: uppercase; letter-spacing: .07em;
+      color: var(--muted); margin-bottom: .75rem; display: flex; align-items: center; gap: .5rem;
     }
+    .section-title::after { content:''; flex:1; height:1px; background:var(--border); }
 
-    /* ── INPUT SECTION ── */
-    .input-row {
-      display: flex;
-      gap: .75rem;
-      align-items: flex-end;
-      flex-wrap: wrap;
-      margin-bottom: 1.4rem;
+    /* INPUTS */
+    .field { display: flex; flex-direction: column; gap: .3rem; }
+    label { font-size: .82rem; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+    input[type="date"], input[type="number"], input[type="text"], select {
+      padding: .6rem .85rem; border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+      background: var(--surface2); font-family: inherit; font-size: .95rem; color: var(--text);
+      outline: none; transition: border-color .15s, box-shadow .15s; min-width: 0; width: 100%;
     }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: .3rem;
+    input:focus, select:focus {
+      border-color: var(--purple); box-shadow: 0 0 0 3px rgba(124,58,237,.12); background: #fff;
     }
+    .input-row { display: flex; gap: .75rem; align-items: flex-end; flex-wrap: wrap; margin-bottom: 1.4rem; }
+    .input-row .field { flex: 1; min-width: 140px; }
+    .btn-row { display: flex; gap: .6rem; align-items: center; }
 
-    label {
-      font-size: .82rem;
-      font-weight: 500;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: .05em;
-    }
-
-    input[type="date"],
-    input[type="number"] {
-      padding: .6rem .85rem;
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-sm);
-      background: var(--surface2);
-      font-family: inherit;
-      font-size: .95rem;
-      color: var(--text);
-      outline: none;
-      transition: border-color .15s, box-shadow .15s;
-      min-width: 0;
-    }
-
-    input[type="date"]:focus,
-    input[type="number"]:focus {
-      border-color: var(--purple);
-      box-shadow: 0 0 0 3px rgba(124,58,237,.12);
-      background: #fff;
-    }
-
-    input[type="number"] { width: 100px; }
-
-    .btn-row {
-      display: flex;
-      gap: .6rem;
-      align-items: center;
-    }
-
+    /* BUTTONS */
     .btn {
-      padding: .6rem 1.1rem;
-      border: none;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      font-family: inherit;
-      font-size: .92rem;
-      font-weight: 600;
-      transition: opacity .15s, transform .1s;
-      line-height: 1;
+      padding: .6rem 1.1rem; border: none; border-radius: var(--radius-sm); cursor: pointer;
+      font-family: inherit; font-size: .92rem; font-weight: 600; transition: opacity .15s, transform .1s; line-height: 1;
     }
-
     .btn:active { transform: scale(.97); }
-
-    .btn-primary {
-      background: var(--grad);
-      color: #fff;
-      box-shadow: 0 3px 10px rgba(124,58,237,.25);
-    }
-
-    .btn-secondary {
-      background: var(--surface2);
-      color: var(--muted);
-      border: 1.5px solid var(--border);
-    }
-
+    .btn-primary { background: var(--grad); color: #fff; box-shadow: 0 3px 10px rgba(124,58,237,.25); }
+    .btn-secondary { background: var(--surface2); color: var(--muted); border: 1.5px solid var(--border); }
     .btn-secondary:hover { color: var(--text); border-color: #c4c9d8; }
 
-    /* ── TOGGLE ── */
+    /* TOGGLE */
     .toggle {
-      position: relative;
-      display: inline-flex;
-      background: var(--surface2);
-      border: 1.5px solid var(--border);
-      border-radius: 999px;
-      padding: 3px;
-      gap: 0;
+      position: relative; display: inline-flex; background: var(--surface2);
+      border: 1.5px solid var(--border); border-radius: 999px; padding: 3px;
     }
-
     .toggle .option {
-      position: relative;
-      z-index: 2;
-      flex: 1;
-      text-align: center;
-      padding: .42rem .75rem;
-      border-radius: 999px;
-      font-size: .85rem;
-      color: var(--muted);
-      cursor: pointer;
-      user-select: none;
-      transition: color .15s;
-      white-space: nowrap;
+      position: relative; z-index: 2; flex: 1; text-align: center;
+      padding: .42rem .75rem; border-radius: 999px; font-size: .85rem;
+      color: var(--muted); cursor: pointer; user-select: none; transition: color .15s; white-space: nowrap;
     }
-
     .toggle .knob {
-      position: absolute;
-      top: 3px;
-      left: 3px;
-      width: calc(50% - 3px);
-      height: calc(100% - 6px);
-      background: var(--grad);
-      border-radius: 999px;
+      position: absolute; top: 3px; left: 3px; width: calc(50% - 3px);
+      height: calc(100% - 6px); background: var(--grad); border-radius: 999px;
       box-shadow: 0 2px 8px rgba(124,58,237,.25);
-      transition: transform .2s cubic-bezier(.2,.9,.2,1);
-      z-index: 1;
-      pointer-events: none;
+      transition: transform .2s cubic-bezier(.2,.9,.2,1); z-index: 1; pointer-events: none;
     }
-
     .toggle[data-value="add"] .knob { transform: translateX(100%); }
-
     .toggle[data-value="subtract"] .option[data-value="subtract"],
-    .toggle[data-value="add"] .option[data-value="add"] {
-      color: white;
-      font-weight: 600;
-    }
+    .toggle[data-value="add"] .option[data-value="add"] { color: white; font-weight: 600; }
+    .sr-radio { position:absolute!important;width:1px;height:1px;clip:rect(0 0 0 0);overflow:hidden;border:0; }
 
-    .sr-radio {
-      position: absolute !important;
-      width: 1px; height: 1px;
-      clip: rect(0 0 0 0);
-      overflow: hidden;
-      border: 0;
-    }
-
-    /* ── RESULTS GRID ── */
-    .results-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: .75rem;
-    }
-
-    @media (max-width: 580px) {
-      .results-grid { grid-template-columns: 1fr; }
-    }
-
-    /* ── RESULT CARD ── */
+    /* RESULT CARDS */
+    .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+    @media (max-width: 580px) { .results-grid { grid-template-columns: 1fr; } }
     .result-card {
-      background: var(--surface2);
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 1rem 1.1rem;
-      display: flex;
-      flex-direction: column;
-      gap: .25rem;
-      transition: border-color .2s;
+      background: var(--surface2); border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); padding: 1rem 1.1rem;
+      display: flex; flex-direction: column; gap: .25rem;
     }
-
-    .result-card:hover { border-color: #c4c9d8; }
-
     .result-card.wide { grid-column: 1 / -1; }
-
-    .result-label {
-      font-size: .78rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      color: var(--muted2);
-    }
-
-    .result-value {
-      font-size: 1.25rem;
-      font-weight: 700;
-      letter-spacing: -.02em;
-      color: var(--text);
-      line-height: 1.2;
-      margin-top: .1rem;
-    }
-
-    .result-iso {
-      font-family: 'DM Mono', monospace;
-      font-size: .78rem;
-      color: var(--muted2);
-      margin-top: .1rem;
-    }
-
-    /* calc section */
+    .result-label { font-size: .78rem; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; color: var(--muted2); }
+    .result-value { font-size: 1.25rem; font-weight: 700; letter-spacing: -.02em; line-height: 1.2; margin-top: .1rem; }
+    .result-iso { font-family: 'DM Mono', monospace; font-size: .78rem; color: var(--muted2); margin-top: .1rem; }
     .calc-section {
-      background: var(--surface2);
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 1rem 1.1rem;
+      background: var(--surface2); border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); padding: 1rem 1.1rem; margin-bottom: 1.25rem;
     }
+    .calc-header { font-size: .78rem; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; color: var(--muted2); margin-bottom: .75rem; }
+    .calc-controls { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; margin-bottom: .75rem; }
+    .calc-controls .field { flex: none; }
 
-    .calc-header {
-      font-size: .78rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      color: var(--muted2);
-      margin-bottom: .75rem;
+    /* PLANS GRID */
+    .plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; margin-bottom: 1.25rem; }
+    @media (max-width: 700px) { .plans-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 440px) { .plans-grid { grid-template-columns: 1fr; } }
+
+    .plan-card {
+      border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 1rem;
+      cursor: pointer; transition: all .15s; position: relative;
+      background: var(--surface2); user-select: none;
     }
-
-    .calc-controls {
-      display: flex;
-      gap: .6rem;
-      align-items: center;
-      flex-wrap: wrap;
-      margin-bottom: .75rem;
+    .plan-card:hover { border-color: var(--purple-light); background: #fff; }
+    .plan-card.selected { border-color: var(--purple); background: #fff; box-shadow: 0 0 0 3px rgba(124,58,237,.1); }
+    .plan-data { font-size: 1.05rem; font-weight: 700; letter-spacing: -.02em; }
+    .plan-gb { font-size: .78rem; color: var(--muted); margin-top: .05rem; }
+    .plan-included { font-size: .75rem; color: var(--muted2); margin-top: .3rem; }
+    .plan-price-promo { font-size: 1.35rem; font-weight: 700; color: var(--purple); margin-top: .5rem; letter-spacing: -.02em; }
+    .plan-price-reg { font-size: .78rem; color: var(--muted2); margin-top: .1rem; }
+    .plan-badge {
+      position: absolute; top: -.65rem; right: .6rem;
+      background: var(--grad); color: white; font-size: .68rem; font-weight: 700;
+      padding: .2rem .5rem; border-radius: 999px;
     }
-
-    .divider {
-      height: 1px;
-      background: var(--border);
-      margin: 1.25rem 0;
+    .plan-check {
+      position: absolute; top: .55rem; right: .55rem;
+      width: 18px; height: 18px; border-radius: 50%; background: var(--grad);
+      display: none; align-items: center; justify-content: center; color: white; font-size: .7rem;
     }
+    .plan-card.selected .plan-check { display: flex; }
 
-    /* ── FOOTER ── */
-    .footer {
-      margin-top: 1.75rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: var(--muted2);
-      font-size: .82rem;
+    /* DURATION TOGGLE */
+    .dur-toggle { display: flex; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 999px; padding: 3px; width: fit-content; margin-bottom: 1.25rem; }
+    .dur-btn { padding: .4rem .9rem; border: none; background: transparent; border-radius: 999px; font-family: inherit; font-size: .85rem; font-weight: 500; color: var(--muted); cursor: pointer; transition: all .15s; white-space: nowrap; }
+    .dur-btn.active { background: var(--grad); color: white; font-weight: 600; box-shadow: 0 2px 8px rgba(124,58,237,.2); }
+
+    /* COST SUMMARY */
+    .cost-summary { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; }
+    .cost-row { display: flex; justify-content: space-between; align-items: center; padding: .75rem 1.1rem; border-bottom: 1px solid var(--border); font-size: .9rem; }
+    .cost-row:last-child { border-bottom: none; }
+    .cost-row.is-total { background: var(--surface2); font-weight: 700; }
+    .cost-row.is-total .cost-val { color: var(--purple); font-size: 1.1rem; }
+    .cost-key { color: var(--muted); }
+    .cost-val { font-family: 'DM Mono', monospace; font-weight: 600; }
+    .cost-note { font-size: .75rem; color: var(--muted2); margin-top: .1rem; }
+
+    /* BANNER */
+    .plan-banner {
+      background: linear-gradient(135deg, rgba(124,58,237,.07), rgba(245,156,39,.07));
+      border: 1.5px solid rgba(124,58,237,.18); border-radius: var(--radius-sm);
+      padding: .85rem 1rem; display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.25rem; gap: .5rem; flex-wrap: wrap;
     }
+    .plan-banner .bn { font-weight: 700; font-size: 1rem; }
+    .plan-banner .bs { font-size: .82rem; color: var(--muted); margin-top: .1rem; }
+    .plan-banner .bp { font-family: 'DM Mono', monospace; font-size: 1.2rem; font-weight: 700; color: var(--purple); }
 
-    .footer a { color: var(--muted2); text-decoration: none; }
+    /* CUSTOM CALC */
+    .custom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-bottom: 1.25rem; }
+    @media (max-width: 500px) { .custom-grid { grid-template-columns: 1fr; } }
+    .prefix-wrap { position: relative; }
+    .prefix-wrap .prefix { position: absolute; left: .75rem; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+    .prefix-wrap input { padding-left: 1.6rem; }
 
-    /* ── SECTION LABEL ── */
-    .section-title {
-      font-size: .82rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: .07em;
-      color: var(--muted);
-      margin-bottom: .75rem;
-      display: flex;
-      align-items: center;
-      gap: .5rem;
-    }
+    /* COMPARE TABLE */
+    .compare-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    .compare-table th { text-align: left; padding: .65rem 1rem; font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); border-bottom: 1.5px solid var(--border); background: var(--surface2); }
+    .compare-table td { padding: .7rem 1rem; border-bottom: 1px solid var(--border); }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr.hl td { background: rgba(124,58,237,.04); }
+    .mono { font-family: 'DM Mono', monospace; font-weight: 500; }
+    .diff-win { color: var(--success); font-weight: 700; }
+    .diff-lose { color: #dc2626; font-weight: 700; }
 
-    .section-title::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
+    /* NOTICE */
+    .notice { background: rgba(245,156,39,.08); border: 1.5px solid rgba(245,156,39,.25); border-radius: var(--radius-sm); padding: .6rem .9rem; font-size: .82rem; color: #7a4800; display: flex; gap: .5rem; margin-bottom: 1.25rem; }
 
-    /* badge */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: .3rem;
-      padding: .2rem .5rem;
-      border-radius: 999px;
-      font-size: .75rem;
-      font-weight: 600;
-    }
-
-    .badge-orange {
-      background: rgba(245,156,39,.12);
-      color: #b86800;
-    }
-
-    .badge-purple {
-      background: rgba(124,58,237,.1);
-      color: var(--purple);
-    }
+    /* FOOTER */
+    .footer { margin-top: 1.75rem; display: flex; justify-content: space-between; color: var(--muted2); font-size: .82rem; }
 
     @media (max-width: 520px) {
       .input-row { flex-direction: column; align-items: stretch; }
-      input[type="number"] { width: 100%; }
-      .btn-row { flex-wrap: wrap; }
       .infobar { font-size: .78rem; gap: .8rem; }
-      .infobar-divider { display: none; }
-      .infobar-live { display: none; }
+      .infobar-divider, .infobar-live { display: none; }
+      .tabs { flex-direction: column; }
     }
   </style>
 </head>
 <body>
 
-  <!-- STICKY INFO BAR -->
-  <div class="infobar" role="status" aria-live="polite" aria-label="Vaste datuminformatie">
-    <div class="infobar-item">
-      <div class="dot dot-orange"></div>
-      <span class="infobar-label">Klanten vanaf besteldatum</span>
-      <span class="infobar-val" id="ib-herroeping">—</span>
-      <span class="infobar-label">zitten in hun herroepingsperiode</span>
+<!-- INFO BAR -->
+<div class="infobar" role="status" aria-live="polite">
+  <div class="infobar-item">
+    <div class="dot dot-orange"></div>
+    <span class="infobar-label">Klanten vanaf besteldatum</span>
+    <span class="infobar-val" id="ib-herroeping">—</span>
+    <span class="infobar-label">zitten in herroepingsperiode</span>
+  </div>
+  <div class="infobar-divider"></div>
+  <div class="infobar-item">
+    <div class="dot dot-purple"></div>
+    <span class="infobar-label">Mag overstappen tot einddatum contract</span>
+    <span class="infobar-val" id="ib-overstap">—</span>
+  </div>
+  <div class="infobar-live"><div class="pulse"></div>Vandaag bijgewerkt</div>
+</div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo" aria-hidden="true">50+</div>
+    <div class="header-text">
+      <h1>50+ Mobiel Tools</h1>
+      <p>Datum- en kostenberekeningen voor 50+ Mobiel</p>
     </div>
-    <div class="infobar-divider"></div>
-    <div class="infobar-item">
-      <div class="dot dot-purple"></div>
-      <span class="infobar-label">Mag overstappen tot einddatum contract</span>
-      <span class="infobar-val" id="ib-overstap">—</span>
-    </div>
-    <div class="infobar-live">
-      <div class="pulse"></div>
-      Vandaag bijgewerkt
-    </div>
+  </header>
+
+  <!-- TABS -->
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" data-tab="datum" onclick="switchTab('datum')">📅 Datum rekenmachine</button>
+    <button class="tab-btn" role="tab" data-tab="kosten" onclick="switchTab('kosten')">💶 Kostenberekening</button>
+    <button class="tab-btn" role="tab" data-tab="vergelijk" onclick="switchTab('vergelijk')">⚖️ Vergelijken</button>
   </div>
 
-  <div class="page">
-
-    <!-- HEADER -->
-    <header class="header">
-      <div class="logo" aria-hidden="true">50+</div>
-      <div class="header-text">
-        <h1>Datum Rekenmachine</h1>
-        <p>Datum gerelateerde tools voor 50+ Mobiel</p>
-      </div>
-    </header>
-
-    <!-- MAIN CARD -->
-    <main class="card" role="main" aria-labelledby="appTitle">
-      <div class="card-header">
-        <div class="icon">📅</div>
-        <h2 id="appTitle">Datum berekenen</h2>
-      </div>
-
+  <!-- ══ TAB: DATUM ══ -->
+  <div id="tab-datum" class="tab-panel active">
+    <main class="card" role="main">
+      <div class="card-header"><div class="icon">📅</div><h2>Datum berekenen</h2></div>
       <div class="card-body">
-
-        <!-- INPUT -->
         <div class="input-row">
           <div class="field">
             <label for="baseDate">Datum</label>
-            <input id="baseDate" type="date" aria-describedby="baseDateHint">
+            <input id="baseDate" type="date" style="width:auto;">
           </div>
           <div class="btn-row">
             <button id="computeBtn" class="btn btn-primary">Bereken</button>
-            <button id="resetBtn" class="btn btn-secondary" title="Reset naar vandaag">Vandaag</button>
+            <button id="resetBtn" class="btn btn-secondary">Vandaag</button>
           </div>
         </div>
 
-        <!-- RESULTS: DAYS UNTIL -->
         <div class="section-title">Dagen tot datum</div>
         <div class="results-grid" style="margin-bottom:1.25rem;">
           <div class="result-card wide" aria-live="polite">
@@ -533,18 +320,17 @@
           </div>
         </div>
 
-        <!-- CALC SECTION -->
         <div class="section-title">Dagen optellen / aftrekken</div>
-        <div class="calc-section" style="margin-bottom:1.25rem;" aria-live="polite" id="resultArea">
+        <div class="calc-section" aria-live="polite">
           <div class="calc-header">Bereken een datum op basis van het aantal dagen</div>
           <div class="calc-controls">
             <div class="field">
               <label for="days">Aantal dagen</label>
-              <input id="days" type="number" min="0" step="1" inputmode="numeric" value="120">
+              <input id="days" type="number" min="0" step="1" inputmode="numeric" value="120" style="width:110px;">
             </div>
             <div class="field">
               <label>Richting</label>
-              <div class="toggle" role="radiogroup" aria-label="Kies optellen of aftrekken" id="modeToggle" data-value="subtract">
+              <div class="toggle" role="radiogroup" id="modeToggle" data-value="subtract">
                 <label class="option" data-value="subtract">
                   <input class="sr-radio" type="radio" name="mode" value="subtract" id="modeSubtract">
                   <span>Aftrekken</span>
@@ -561,118 +347,334 @@
           <div id="resultHuman" class="result-value">—</div>
           <div id="resultIso" class="result-iso">—</div>
         </div>
-
-      </div><!-- /card-body -->
+      </div>
     </main>
+  </div>
 
-    <!-- FOOTER -->
-    <div class="footer">
-      <span>© 2026 50+ Mobiel</span>
-      <span>Michael Kooltjes</span>
+  <!-- ══ TAB: KOSTEN ══ -->
+  <div id="tab-kosten" class="tab-panel">
+    <div class="card">
+      <div class="card-header"><div class="icon">📦</div><h2>50+ Mobiel aanbod &amp; kostenberekening</h2></div>
+      <div class="card-body">
+
+        <div class="notice">
+          <span>ℹ️</span>
+          <span>Actueel aanbod van <strong>50plusmobiel.nl</strong> (april 2026) — 5G via Vodafone netwerk, aansluitkosten €0,-. Actieprijzen gelden de eerste 12 maanden bij 2-jarig contract.</span>
+        </div>
+
+        <div class="section-title">Contractduur</div>
+        <div class="dur-toggle">
+          <button class="dur-btn active" data-dur="2" onclick="selectDuration(2)">2 jaar (actietarief)</button>
+          <button class="dur-btn" data-dur="1" onclick="selectDuration(1)">1 jaar</button>
+        </div>
+
+        <div class="section-title">Kies een pakket</div>
+        <div class="plans-grid" id="plansGrid"></div>
+
+        <div id="costSummaryWrap" style="display:none;">
+          <div class="section-title">Kostenberekening</div>
+          <div class="plan-banner">
+            <div>
+              <div class="bn" id="bannerName">—</div>
+              <div class="bs" id="bannerSub">—</div>
+            </div>
+            <div class="bp" id="bannerPrice">—</div>
+          </div>
+          <div class="cost-summary" id="costSummary"></div>
+        </div>
+
+      </div>
     </div>
+  </div>
 
-  </div><!-- /page -->
+  <!-- ══ TAB: VERGELIJKEN ══ -->
+  <div id="tab-vergelijk" class="tab-panel">
+    <div class="card">
+      <div class="card-header"><div class="icon">⚖️</div><h2>Vergelijken met ander aanbod</h2></div>
+      <div class="card-body">
+        <p style="font-size:.9rem;color:var(--muted);margin-bottom:1.25rem;">
+          Vul de details van een concurrerend aanbod in en vergelijk die met een 50+ Mobiel pakket.
+        </p>
 
-  <script>
-    const humanFmt = new Intl.DateTimeFormat('nl-NL', { day:'2-digit', month:'short', year:'numeric' });
+        <div class="section-title">Ander aanbod</div>
+        <div class="custom-grid">
+          <div class="field"><label for="cmpName">Naam provider</label><input type="text" id="cmpName" placeholder="bijv. KPN, T-Mobile…"></div>
+          <div class="field"><label for="cmpData">Data per maand</label><input type="text" id="cmpData" placeholder="bijv. 10 GB, onbeperkt…"></div>
+          <div class="field">
+            <label for="cmpMonthly">Maandprijs (€)</label>
+            <div class="prefix-wrap"><span class="prefix">€</span><input type="number" id="cmpMonthly" min="0" step="0.01" placeholder="0.00"></div>
+          </div>
+          <div class="field"><label for="cmpDuration">Looptijd (maanden)</label><input type="number" id="cmpDuration" min="1" step="1" value="24"></div>
+          <div class="field">
+            <label for="cmpSetup">Aansluitkosten (€)</label>
+            <div class="prefix-wrap"><span class="prefix">€</span><input type="number" id="cmpSetup" min="0" step="0.01" placeholder="0.00" value="0"></div>
+          </div>
+          <div class="field">
+            <label for="cmpExtra">Extra maandkosten (€)</label>
+            <div class="prefix-wrap"><span class="prefix">€</span><input type="number" id="cmpExtra" min="0" step="0.01" placeholder="0.00" value="0"></div>
+          </div>
+        </div>
 
-    function toInputDateString(d) {
-      const y = d.getFullYear();
-      const m = String(d.getMonth()+1).padStart(2,'0');
-      const day = String(d.getDate()).padStart(2,'0');
-      return `${y}-${m}-${day}`;
-    }
+        <div class="section-title">50+ Mobiel pakket ter vergelijking</div>
+        <div class="custom-grid" style="margin-bottom:1.25rem;">
+          <div class="field"><label for="cmp50Plan">Pakket</label><select id="cmp50Plan"><option value="">— kies pakket —</option></select></div>
+          <div class="field"><label for="cmp50Dur">Contractduur</label><select id="cmp50Dur"><option value="2">2 jaar (actieprijzen)</option><option value="1">1 jaar</option></select></div>
+        </div>
 
-    function parseInputDate(v) {
-      if (!v) return null;
-      const [y, m, d] = v.split('-').map(Number);
-      if (!y || !m || !d) return null;
-      return new Date(y, m-1, d);
-    }
+        <button class="btn btn-primary" onclick="runComparison()">Vergelijking berekenen</button>
 
-    function addDays(date, days) {
-      const r = new Date(date);
-      r.setDate(r.getDate() + days);
-      return r;
-    }
+        <div id="compareResult" style="display:none;margin-top:1.5rem;">
+          <div class="section-title">Resultaat</div>
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>50+ Mobiel</th>
+                <th id="cmpHeaderOther">Andere provider</th>
+              </tr>
+            </thead>
+            <tbody id="compareBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    // Elements
-    const baseDateEl = document.getElementById('baseDate');
-    const daysEl = document.getElementById('days');
-    const modeToggle = document.getElementById('modeToggle');
-    const toggleOptions = modeToggle.querySelectorAll('.option');
+  <div class="footer">
+    <span>© 2026 50+ Mobiel</span>
+    <span>Michael Kooltjes</span>
+  </div>
+</div>
 
-    function syncToggleUI() {
-      const checked = document.querySelector('input[name="mode"]:checked');
-      modeToggle.dataset.value = checked ? checked.value : 'subtract';
-    }
+<script>
+// ══ DATA (live 50plusmobiel.nl april 2026) ══
+const PLANS = [
+  { id:'p1', label:'5.000 MB',  gb:5,   promo:4.00, reg:6.50,  popular:false },
+  { id:'p2', label:'10.000 MB', gb:10,  promo:5.00, reg:7.50,  popular:false },
+  { id:'p3', label:'25.000 MB', gb:25,  promo:6.00, reg:9.00,  popular:false },
+  { id:'p4', label:'45.000 MB', gb:45,  promo:6.50, reg:10.00, popular:false },
+  { id:'p5', label:'55.000 MB', gb:55,  promo:7.00, reg:11.00, popular:true  },
+  { id:'p6', label:'75.000 MB', gb:75,  promo:8.00, reg:14.00, popular:false },
+];
 
-    function updateAll() {
-      const base = parseInputDate(baseDateEl.value);
-      const today = new Date();
+const eur = v => '€\u202f' + v.toFixed(2).replace('.',',');
 
-      // Always update the info bar with today-relative dates
-      const herroeping = addDays(today, -14);
-      const overstap = addDays(today, 120);
-      document.getElementById('ib-herroeping').textContent = humanFmt.format(herroeping);
-      document.getElementById('ib-overstap').textContent = humanFmt.format(overstap);
+let activePlan = null;
+let activeDur  = 2;
 
-      if (!base) {
-        document.getElementById('resultHuman').textContent = 'Ongeldige datum';
-        document.getElementById('resultIso').textContent = '—';
-        document.getElementById('remainingDaysHuman').textContent = '—';
-        document.getElementById('remainingDaysIso').textContent = '—';
-        return;
-      }
+// ══ TABS ══
+function switchTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+  document.getElementById('tab-' + name).classList.add('active');
+}
 
-      // Days until base
-      const utcBase = Date.UTC(base.getFullYear(), base.getMonth(), base.getDate());
-      const utcNow = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
-      const diffDays = Math.ceil((utcBase - utcNow) / 86400000);
+// ══ PLANS ══
+function renderPlans() {
+  const grid = document.getElementById('plansGrid');
+  grid.innerHTML = PLANS.map(p => {
+    const price = activeDur === 2 ? p.promo : p.reg;
+    const sel = activePlan && activePlan.id === p.id;
+    return `<div class="plan-card ${sel?'selected':''}" onclick="selectPlan('${p.id}')">
+      ${p.popular ? '<div class="plan-badge">⭐ Meest gekozen</div>' : ''}
+      <div class="plan-check">✓</div>
+      <div class="plan-data">${p.label}</div>
+      <div class="plan-gb">${p.gb} GB · 5G Vodafone</div>
+      <div class="plan-included">✓ Onbeperkt bellen &amp; SMS</div>
+      <div class="plan-price-promo">${eur(price)}<span style="font-size:.75rem;font-weight:400;color:var(--muted)">/mnd</span></div>
+      ${activeDur===2 ? `<div class="plan-price-reg">Regulier: ${eur(p.reg)}/mnd (mnd 13+)</div>` : ''}
+    </div>`;
+  }).join('');
 
-      let remainingText;
-      if (diffDays === 0) remainingText = 'Vandaag';
-      else if (diffDays > 0) remainingText = `${diffDays} dag${diffDays === 1 ? '' : 'en'}`;
-      else remainingText = `${Math.abs(diffDays)} dag${Math.abs(diffDays) === 1 ? '' : 'en'} geleden`;
+  // fill compare select
+  const sel = document.getElementById('cmp50Plan');
+  const prev = sel.value;
+  sel.innerHTML = '<option value="">— kies pakket —</option>' +
+    PLANS.map(p => `<option value="${p.id}">${p.label} — promo ${eur(p.promo)} / regulier ${eur(p.reg)}</option>`).join('');
+  if (prev) sel.value = prev;
+}
 
-      document.getElementById('remainingDaysHuman').textContent = remainingText;
-      document.getElementById('remainingDaysIso').textContent = toInputDateString(base);
+function selectDuration(dur) {
+  activeDur = dur;
+  document.querySelectorAll('.dur-btn').forEach(b => b.classList.toggle('active', +b.dataset.dur === dur));
+  renderPlans();
+  if (activePlan) renderCost();
+}
 
-      // Add/subtract days
-      let n = parseInt(daysEl.value, 10);
-      if (Number.isNaN(n) || n < 0) n = 0;
-      const checked = document.querySelector('input[name="mode"]:checked');
-      const mode = checked ? checked.value : 'subtract';
-      const result = addDays(base, mode === 'add' ? n : -n);
-      document.getElementById('resultHuman').textContent = humanFmt.format(result);
-      document.getElementById('resultIso').textContent = toInputDateString(result);
-    }
+function selectPlan(id) {
+  activePlan = PLANS.find(p => p.id === id) || null;
+  renderPlans();
+  renderCost();
+}
 
-    function setDefaults() {
-      baseDateEl.value = toInputDateString(new Date());
-      daysEl.value = 120;
-      document.getElementById('modeSubtract').checked = true;
-      syncToggleUI();
-      updateAll();
-    }
+function renderCost() {
+  const wrap = document.getElementById('costSummaryWrap');
+  if (!activePlan) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  const p = activePlan;
+  const months = activeDur * 12;
+  const promoM = activeDur === 2 ? 12 : 0;
+  const regM   = months - promoM;
+  const promoT = promoM * p.promo;
+  const regT   = regM   * p.reg;
+  const total  = promoT + regT;
+  const avg    = total / months;
 
-    document.getElementById('computeBtn').addEventListener('click', updateAll);
-    document.getElementById('resetBtn').addEventListener('click', setDefaults);
-    [baseDateEl, daysEl].forEach(el => {
-      el.addEventListener('input', updateAll);
-      el.addEventListener('change', updateAll);
-    });
-    document.querySelectorAll('input[name="mode"]').forEach(r =>
-      r.addEventListener('change', () => { syncToggleUI(); updateAll(); })
-    );
-    toggleOptions.forEach(opt => {
-      opt.addEventListener('click', () => {
-        const input = opt.querySelector('input[name="mode"]');
-        if (input) { input.checked = true; syncToggleUI(); updateAll(); }
-      });
-    });
+  document.getElementById('bannerName').textContent  = p.label + ' pakket';
+  document.getElementById('bannerSub').textContent   = activeDur + '-jarig contract · 5G Vodafone';
+  document.getElementById('bannerPrice').textContent = eur(activeDur===2 ? p.promo : p.reg) + '/mnd';
 
-    document.addEventListener('DOMContentLoaded', setDefaults);
-  </script>
+  const rows = [];
+  if (activeDur === 2) {
+    rows.push({ k:'Maanden 1–12 (actietarief)',   v: eur(p.promo)+'/mnd', note:'' });
+    rows.push({ k:'Maanden 13–24 (regulier tarief)', v: eur(p.reg)+'/mnd', note:'' });
+    rows.push({ k:'Subtotaal jaar 1', v: eur(promoT) });
+    rows.push({ k:'Subtotaal jaar 2', v: eur(regT) });
+  } else {
+    rows.push({ k:'Maandprijs', v: eur(p.reg)+'/mnd' });
+  }
+  rows.push({ k:'Aansluitkosten', v: eur(0) });
+  rows.push({ k:'Totaal over ' + months + ' maanden', v: eur(total), total:true, note: activeDur===2?'Inclusief actietarief eerste 12 maanden':'' });
+  rows.push({ k:'Gemiddeld per maand', v: eur(avg), note:'Gemiddelde over de gehele looptijd' });
+
+  document.getElementById('costSummary').innerHTML = rows.map(r => `
+    <div class="cost-row ${r.total?'is-total':''}">
+      <div>
+        <div class="${r.total?'':'cost-key'}">${r.k}</div>
+        ${r.note ? `<div class="cost-note">${r.note}</div>` : ''}
+      </div>
+      <div class="cost-val">${r.v}</div>
+    </div>`).join('');
+}
+
+// ══ COMPARISON ══
+function runComparison() {
+  const name    = document.getElementById('cmpName').value.trim() || 'Andere provider';
+  const data    = document.getElementById('cmpData').value.trim() || '—';
+  const monthly = parseFloat(document.getElementById('cmpMonthly').value) || 0;
+  const dur     = parseInt(document.getElementById('cmpDuration').value) || 24;
+  const setup   = parseFloat(document.getElementById('cmpSetup').value)   || 0;
+  const extra   = parseFloat(document.getElementById('cmpExtra').value)    || 0;
+  const planId  = document.getElementById('cmp50Plan').value;
+  const dur50   = parseInt(document.getElementById('cmp50Dur').value) || 2;
+
+  if (!planId) { alert('Kies eerst een 50+ Mobiel pakket.'); return; }
+  const p = PLANS.find(x => x.id === planId);
+
+  const otherTotal = setup + (monthly + extra) * dur;
+  const otherAvg   = otherTotal / dur;
+
+  const promoM = dur50 === 2 ? Math.min(12, dur) : 0;
+  const regM   = dur - promoM;
+  const total50 = promoM * p.promo + regM * p.reg;
+  const avg50   = total50 / dur;
+
+  const diff    = otherTotal - total50;
+  const diffAvg = otherAvg - avg50;
+  const cls     = diff > 0 ? 'diff-win' : 'diff-lose';
+  const absDiff = Math.abs(diff);
+
+  document.getElementById('cmpHeaderOther').textContent = name;
+  document.getElementById('compareBody').innerHTML = `
+    <tr>
+      <td class="cost-key">Data</td>
+      <td>${p.label}</td>
+      <td>${data}</td>
+    </tr>
+    <tr>
+      <td class="cost-key">Looptijd</td>
+      <td>${dur50} jaar (${dur50*12} mnd)</td>
+      <td>${dur} maanden</td>
+    </tr>
+    <tr>
+      <td class="cost-key">Maandprijs</td>
+      <td class="mono">${dur50===2 ? eur(p.promo)+' → '+eur(p.reg) : eur(p.reg)}</td>
+      <td class="mono">${eur(monthly+extra)}</td>
+    </tr>
+    <tr>
+      <td class="cost-key">Aansluitkosten</td>
+      <td class="mono">€ 0,00</td>
+      <td class="mono">${eur(setup)}</td>
+    </tr>
+    <tr class="hl">
+      <td class="cost-key"><strong>Totaal ${dur} mnd</strong></td>
+      <td class="mono"><strong>${eur(total50)}</strong></td>
+      <td class="mono"><strong>${eur(otherTotal)}</strong></td>
+    </tr>
+    <tr class="hl">
+      <td class="cost-key"><strong>Gemiddeld/mnd</strong></td>
+      <td class="mono"><strong>${eur(avg50)}</strong></td>
+      <td class="mono"><strong>${eur(otherAvg)}</strong></td>
+    </tr>
+    <tr>
+      <td class="cost-key"><strong>Conclusie</strong></td>
+      <td colspan="2" style="text-align:center;">
+        <span class="${cls}">
+          ${diff > 0 ? '50+ Mobiel is ' + eur(absDiff) + ' goedkoper'
+          : diff < 0 ? '50+ Mobiel is ' + eur(absDiff) + ' duurder'
+          : 'Gelijke kosten'}
+        </span>
+        ${diff !== 0 ? `<span style="color:var(--muted2);font-size:.8rem;display:block;margin-top:.2rem;">(${eur(Math.abs(diffAvg))}/mnd gemiddeld verschil)</span>` : ''}
+      </td>
+    </tr>`;
+  document.getElementById('compareResult').style.display = 'block';
+}
+
+// ══ DATUM TOOL ══
+const humanFmt = new Intl.DateTimeFormat('nl-NL', { day:'2-digit', month:'short', year:'numeric' });
+const toStr = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const parseD = v => { if(!v) return null; const [y,m,d]=v.split('-').map(Number); return (y&&m&&d)?new Date(y,m-1,d):null; };
+const addD = (date,n) => { const r=new Date(date); r.setDate(r.getDate()+n); return r; };
+
+function syncToggle() {
+  const c = document.querySelector('input[name="mode"]:checked');
+  document.getElementById('modeToggle').dataset.value = c ? c.value : 'subtract';
+}
+function updateAll() {
+  const today = new Date();
+  document.getElementById('ib-herroeping').textContent = humanFmt.format(addD(today,-14));
+  document.getElementById('ib-overstap').textContent   = humanFmt.format(addD(today, 120));
+
+  const base = parseD(document.getElementById('baseDate').value);
+  if (!base) {
+    ['resultHuman','remainingDaysHuman'].forEach(id => document.getElementById(id).textContent = 'Ongeldige datum');
+    ['resultIso','remainingDaysIso'].forEach(id => document.getElementById(id).textContent = '—');
+    return;
+  }
+  const diff = Math.ceil((Date.UTC(base.getFullYear(),base.getMonth(),base.getDate()) - Date.UTC(today.getFullYear(),today.getMonth(),today.getDate())) / 86400000);
+  document.getElementById('remainingDaysHuman').textContent = diff===0?'Vandaag': diff>0? diff+' dag'+(diff===1?'':'en'): Math.abs(diff)+' dag'+(Math.abs(diff)===1?'':'en')+' geleden';
+  document.getElementById('remainingDaysIso').textContent = toStr(base);
+
+  let n = parseInt(document.getElementById('days').value,10); if(isNaN(n)||n<0) n=0;
+  const mode = (document.querySelector('input[name="mode"]:checked')||{}).value||'subtract';
+  const res = addD(base, mode==='add'?n:-n);
+  document.getElementById('resultHuman').textContent = humanFmt.format(res);
+  document.getElementById('resultIso').textContent   = toStr(res);
+}
+function setDefaults() {
+  document.getElementById('baseDate').value = toStr(new Date());
+  document.getElementById('days').value = 120;
+  document.getElementById('modeSubtract').checked = true;
+  syncToggle(); updateAll();
+}
+
+document.getElementById('computeBtn').addEventListener('click', updateAll);
+document.getElementById('resetBtn').addEventListener('click', setDefaults);
+['baseDate','days'].forEach(id => {
+  document.getElementById(id).addEventListener('input', updateAll);
+  document.getElementById(id).addEventListener('change', updateAll);
+});
+document.querySelectorAll('input[name="mode"]').forEach(r => r.addEventListener('change', () => { syncToggle(); updateAll(); }));
+document.querySelectorAll('#modeToggle .option').forEach(opt =>
+  opt.addEventListener('click', () => { const i=opt.querySelector('input'); if(i){i.checked=true;syncToggle();updateAll();} })
+);
+['cmpMonthly','cmpDuration','cmpSetup','cmpExtra'].forEach(id =>
+  document.getElementById(id).addEventListener('input', () => {
+    if (document.getElementById('compareResult').style.display !== 'none') runComparison();
+  })
+);
+
+document.addEventListener('DOMContentLoaded', () => { setDefaults(); renderPlans(); });
+</script>
 </body>
 </html>
