@@ -357,9 +357,29 @@
       <div class="card-header"><div class="icon">📦</div><h2>50+ Mobiel aanbod &amp; kostenberekening</h2></div>
       <div class="card-body">
 
-        <div class="notice">
+        <div class="notice" id="priceNotice">
           <span>ℹ️</span>
-          <span>Prijzen worden handmatig door Mike aangepast. Als het niet klopt vertel het mij even :)</span>
+          <span id="priceNoticeText">Prijzen worden handmatig ververst</span>
+        </div>
+        <div style="margin-bottom:1.25rem;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;">
+          <button class="btn btn-secondary" id="refreshPricesBtn" onclick="handleRefreshPrices()" style="display:flex;align-items:center;gap:.4rem;">
+            <span id="refreshIcon">🔄</span> <span id="refreshLabel">Prijzen verversen</span>
+          </button>
+          <span id="lastUpdatedLabel" style="font-size:.8rem;color:var(--muted2);"></span>
+        </div>
+        <!-- Admin wachtwoord modal -->
+        <div id="adminModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:999;align-items:center;justify-content:center;">
+          <div style="background:#fff;border-radius:var(--radius);box-shadow:0 8px 32px rgba(0,0,0,.18);padding:2rem;min-width:300px;max-width:90vw;">
+            <h3 style="font-size:1rem;font-weight:700;margin-bottom:.25rem;">🔐 Beheerder verificatie</h3>
+            <p style="font-size:.85rem;color:var(--muted);margin-bottom:1rem;">Voer het beheerderswachtwoord in om prijzen te verversen.</p>
+            <input type="password" id="adminPwInput" placeholder="Wachtwoord" style="width:100%;margin-bottom:.75rem;"
+              onkeydown="if(event.key==='Enter')confirmAdminPw()">
+            <div id="adminPwError" style="color:#dc2626;font-size:.82rem;margin-bottom:.5rem;display:none;">Onjuist wachtwoord.</div>
+            <div style="display:flex;gap:.5rem;justify-content:flex-end;">
+              <button class="btn btn-secondary" onclick="closeAdminModal()">Annuleren</button>
+              <button class="btn btn-primary" onclick="confirmAdminPw()">Bevestigen</button>
+            </div>
+          </div>
         </div>
 
         <div class="section-title">Contractduur</div>
@@ -674,7 +694,117 @@ document.querySelectorAll('#modeToggle .option').forEach(opt =>
   })
 );
 
-document.addEventListener('DOMContentLoaded', () => { setDefaults(); renderPlans(); });
+document.addEventListener('DOMContentLoaded', () => { setDefaults(); renderPlans(); loadCachedPrices(); });
+
+// ══ ADMIN & AI PRIJSVERVERSING ══
+const ADMIN_HASH = '8c6976e5b5410415bde908bd4dee15dfb167a9c32cd5b8fc1f61e41e0a78dc7'; // sha256 van 'admin'
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+function handleRefreshPrices() {
+  document.getElementById('adminModal').style.display = 'flex';
+  setTimeout(() => document.getElementById('adminPwInput').focus(), 50);
+}
+
+function closeAdminModal() {
+  document.getElementById('adminModal').style.display = 'none';
+  document.getElementById('adminPwInput').value = '';
+  document.getElementById('adminPwError').style.display = 'none';
+}
+
+async function confirmAdminPw() {
+  const pw = document.getElementById('adminPwInput').value;
+  const hash = await sha256(pw);
+  if (hash !== ADMIN_HASH) {
+    document.getElementById('adminPwError').style.display = 'block';
+    return;
+  }
+  closeAdminModal();
+  fetchPricesWithAI();
+}
+
+function loadCachedPrices() {
+  try {
+    const cached = localStorage.getItem('50plus_plans');
+    const ts = localStorage.getItem('50plus_plans_ts');
+    if (cached && ts) {
+      const parsed = JSON.parse(cached);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        PLANS.splice(0, PLANS.length, ...parsed);
+        renderPlans();
+        const d = new Date(parseInt(ts));
+        document.getElementById('lastUpdatedLabel').textContent = 'Laatste update: ' + d.toLocaleString('nl-NL');
+      }
+    }
+  } catch(e) {}
+}
+
+async function fetchPricesWithAI() {
+  const btn = document.getElementById('refreshPricesBtn');
+  const icon = document.getElementById('refreshIcon');
+  const label = document.getElementById('refreshLabel');
+  const notice = document.getElementById('priceNoticeText');
+
+  btn.disabled = true;
+  icon.textContent = '⏳';
+  label.textContent = 'Prijzen ophalen…';
+  notice.textContent = 'Bezig met ophalen van actuele prijzen via AI…';
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+        system: `Je bent een assistent die de actuele sim-only abonnementsprijzen van 50plusmobiel.nl opzoekt.
+Zoek de huidige prijzen op en retourneer ALLEEN een JSON-array, zonder enige andere tekst, uitleg, of markdown backticks.
+De array moet dit exacte formaat hebben:
+[{"id":"p1","label":"5.000 MB","gb":5,"promo":2.50,"reg":6.50,"popular":false}, ...]
+- "promo" is het actietarief (eerste 12 maanden bij 2-jarig contract)
+- "reg" is het reguliere tarief (na 12 maanden, of bij 1-jarig contract)
+- "popular" is true voor het meest gekozen pakket
+Retourneer ALLEEN de JSON-array. Geen uitleg, geen tekst eromheen.`,
+        messages: [{ role: 'user', content: 'Zoek de actuele sim-only abonnementsprijzen van 50plusmobiel.nl op en retourneer ze als JSON-array.' }]
+      })
+    });
+
+    const data = await response.json();
+    const fullText = (data.content || []).map(b => b.type === 'text' ? b.text : '').join('');
+    const match = fullText.match(/\[[\s\S]*\]/);
+    if (!match) throw new Error('Geen geldige JSON gevonden in antwoord.');
+    const parsed = JSON.parse(match[0]);
+    if (!Array.isArray(parsed) || parsed.length === 0) throw new Error('Lege of ongeldige plannenlijst.');
+
+    PLANS.splice(0, PLANS.length, ...parsed);
+    renderPlans();
+    if (activePlan) {
+      const updated = PLANS.find(p => p.id === activePlan.id);
+      if (updated) { activePlan = updated; renderCost(); }
+    }
+
+    localStorage.setItem('50plus_plans', JSON.stringify(parsed));
+    localStorage.setItem('50plus_plans_ts', Date.now().toString());
+
+    const now = new Date().toLocaleString('nl-NL');
+    document.getElementById('lastUpdatedLabel').textContent = 'Laatste update: ' + now;
+    notice.textContent = '✅ Prijzen succesvol bijgewerkt via AI op ' + now + '.';
+    icon.textContent = '✅';
+    label.textContent = 'Prijzen verversen';
+
+  } catch(err) {
+    notice.textContent = '❌ Ophalen mislukt: ' + err.message + ' — hardcoded prijzen worden gebruikt.';
+    icon.textContent = '⚠️';
+    label.textContent = 'Opnieuw proberen';
+    console.error('AI prijzen fout:', err);
+  } finally {
+    btn.disabled = false;
+  }
+}
 </script>
 </body>
 </html>
